@@ -5,8 +5,8 @@ import os
 from glview import *
 
 class   app_sheet(glv_class_sheet):
-    def __init__(self):
-        glv_class_sheet.__init__(self)
+    def __init__(self, sheet = None):
+        glv_class_sheet.__init__(self, sheet)
 
     def sheet_init_params(self,sheet, WinWidth, WinHeight):
         geometry = GLV_WIGET_GEOMETRY_t()
@@ -45,8 +45,17 @@ class   app_sheet(glv_class_sheet):
             string = self.wiget_text_input.getValue("text","S",str)
             print("sheet_action:input {}".format(string))
 
-            glv_setValue(glv_win,"text","S",string)
-            glvOnReDraw(glv_win)
+            if (1):
+                # 引数のwindow,sheet,wiget等からインスタンスを生成した場合、
+                # インスタンスが持つローカル変数は初期化されるので、
+                # 内部の値にアクセスする場合は、onReDrawやsetValue,getValue等の
+                # glviewが提供するインターフェースを使用する事
+                window1 = app_window(glv_win)
+                window1.setValue("text","S",string)
+                window1.onReDraw()
+            else:
+                glv_setValue(glv_win,"text","S",string)
+                glvOnReDraw(glv_win)
 
         return(GLV_OK)
 
@@ -67,8 +76,8 @@ class   app_sheet(glv_class_sheet):
         return(GLV_OK)
 
 class   app_window(glv_class_window):
-    def __init__(self):
-        glv_class_window.__init__(self)
+    def __init__(self, window = None):
+        glv_class_window.__init__(self, window)
 
     def redraw(self,window):
         glClearColor(0.5,0.5,0.5,1.0)
@@ -111,8 +120,8 @@ class   app_window(glv_class_window):
 
 # ------------------------------------------------------------------------------
 class   app_frame(glv_class_frame):
-    def __init__(self):
-        glv_class_frame.__init__(self)
+    def __init__(self, frame = None):
+        glv_class_frame.__init__(self, frame)
 
     def on_start(self,frame_window,width,height):
         window1 = app_window()

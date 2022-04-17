@@ -17,6 +17,9 @@ class glv_class_instance(object):
             self.instance = value
         super().__setattr__(name, value)
 
+    def id(self):
+        return self.instance
+
     if (0):
         def getInstanceType(self,instance = None):
             if instance == None:
@@ -65,10 +68,10 @@ class glv_class_instance(object):
         return glv_py_getUserData(self.instance,user_data_struct)
 # ------------------------------------------------------------------------------
 class glv_class_resource(glv_class_instance):
-    def __init__(self):
+    def __init__(self, resource = None):
         glv_class_instance.__init__(self)
 
-        self.resource = None
+        self.resource = resource
 
     def createResource(self):
         resource =  glvCreateResource()
@@ -79,10 +82,10 @@ class glv_class_resource(glv_class_instance):
         glvDestroyResource(self.resource)
 # ------------------------------------------------------------------------------
 class glv_class_display(glv_class_instance):
-    def __init__(self):
+    def __init__(self, display = None):
         glv_class_instance.__init__(self)
 
-        self.display = None
+        self.display = display
 
     def open(self,dpyName = None):
         display =  glvOpenDisplay(dpyName)
@@ -130,10 +133,10 @@ class glv_class_window_base(glv_class_instance):
         return glvEscapeEventLoop(self.instance)
 # ------------------------------------------------------------------------------
 class glv_class_window_common(glv_class_window_base):
-    def __init__(self):
+    def __init__(self,window):
         glv_class_window_base.__init__(self)
 
-        self.window = None
+        self.window = window
 
     def destroy(self):
         glvDestroyWindow(self.window)
@@ -163,10 +166,10 @@ class glv_class_window_common(glv_class_window_base):
         return glvOnUpdate(self.window)
 # ------------------------------------------------------------------------------
 class glv_class_sheet(glv_class_window_base):
-    def __init__(self):
+    def __init__(self, sheet = None):
         glv_class_window_base.__init__(self)
 
-        self.sheet = None
+        self.sheet = sheet
 
         self.sheet_listener = glv_sheet_listener()
 
@@ -258,10 +261,10 @@ class glv_class_sheet(glv_class_window_base):
         return glvSheet_getSelectWigetStatus(self.sheet)
 # ------------------------------------------------------------------------------
 class glv_class_wiget(glv_class_window_base):
-    def __init__(self):
+    def __init__(self, wiget = None):
         glv_class_window_base.__init__(self)
 
-        self.wiget = None
+        self.wiget = wiget
 
         self.wiget_listener = glv_wiget_listener()
 
@@ -348,8 +351,8 @@ class glv_class_wiget(glv_class_window_base):
         return glvWiget_setFocus(self.wiget)
 # ------------------------------------------------------------------------------
 class glv_class_frame(glv_class_window_common):
-    def __init__(self):
-        glv_class_window_common.__init__(self)
+    def __init__(self, window = None):
+        glv_class_window_common.__init__(self,window)
 
         self.frame_listener = glv_frame_listener()
 
@@ -391,8 +394,8 @@ class glv_class_frame(glv_class_window_common):
 # ------------------------------------------------------------------------------
 class glv_class_window(glv_class_window_common):
 
-    def __init__(self):
-        glv_class_window_common.__init__(self)
+    def __init__(self, window = None):
+        glv_class_window_common.__init__(self,window)
 
         self.window_listener = glv_window_listener()
 
