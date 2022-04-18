@@ -9,8 +9,8 @@ from ctypes import CDLL, sizeof, byref,Structure, Union, CFUNCTYPE, POINTER, poi
 c_void = None
 NULL = None
 
-class c_structure(Structure):
+class c_Structure(Structure):
     pass
 
-class c_union(Union):
+class c_Union(Union):
     pass

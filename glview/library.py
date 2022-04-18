@@ -54,7 +54,81 @@ if es1emu is None:
 if pthread is None:
     raise ImportError("Failed to load GLVIEW(pthread) shared library.")
 
-class   glv_c_interface_v(c_union):
+# ------------------------------------------------------------------------------
+'''
+    c言語python3用定数値連携処理インターフェース(Python 3.9.7で動作確認済み)
+    pythonのctypesを利用してshared libraryを呼び出す場合、通常、
+    C言語側で#defineで設定した値をpython側では変数として手入力しているが、
+    プリプロセッサー処理が無いため、煩雑であり、間違ったり、
+    修正漏れによる不具合が出る可能性が高い。
+    その為、同期合わせする仕組みを作成した。
+
+・C言語側条件
+    記号定数マクロのみ指定可能
+    引数付きマクロの場合は、一度記号定数マクロで定義して使用する
+    マクロ展開後に定数に展開できない場合は、使用できない(変数が含まれる場合など)
+'''
+'''
+// 使用例
+
+// C言語側）
+
+//以下の3つのマクロの値をpython側に渡したい場合
+#define HOGE_CONST1	0xff123456
+#define HOGE_CONST2	"[test string test]"
+#define HOGE_CONST3	(132.6)
+
+// GLV_CONST_DEFINE(マクロ名、型);
+// マクロの入れ子（多重定義）も展開される
+// 記号定数マクロのみ指定可能なので、引数付きマクロの内容を
+// 型の名前は、ctypesの型定義名称から'c_'を外した名称が設定できる
+// 			(size_t,int8,uint8,int16),uint16,int32,uint32,int64,uint64,char_p,float,double)
+GLV_CONST_DEFINE(HOGE_CONST1,uint32);
+GLV_CONST_DEFINE(HOGE_CONST2,char_p);
+GLV_CONST_DEFINE(HOGE_CONST3,float);
+
+//例えば、GLV_CONST_DEFINE(HOGE_CONST1,uint32);と記述した場合、以下の処理に展開される
+struct c_const_value glv_c__HOGE_CONST1 = {.type = "c_""uint32" , .v.c_uint32 = (0xff123456)};
+
+# (python言語側）
+
+HOGE_CONST1 = glv_linking_value('HOGE_CONST1')
+HOGE_CONST2 = glv_linking_value('HOGE_CONST2')
+HOGE_CONST3 = glv_linking_value('HOGE_CONST3')
+
+print('HOGE_CONST1:',type(HOGE_CONST1),'{:x}'.format(HOGE_CONST1))
+print('HOGE_CONST2:',type(HOGE_CONST2),HOGE_CONST2)
+print('HOGE_CONST3:',type(HOGE_CONST3),HOGE_CONST3)
+
+'''
+'''
+// C言語側のインターフェース実装は以下を参照の事
+// glview/glview_python.c
+
+struct c_const_value {
+   char *type;
+   union{
+	size_t		c_size_t;
+	int8_t		c_int8;
+	uint8_t		c_uint8;
+	int16_t		c_int16;
+	uint16_t	c_uint16;
+	int32_t		c_int32;
+	uint32_t	c_uint32;
+	int64_t		c_int64;
+	uint64_t	c_uint64;
+	char		*c_char_p;
+	float		c_float;
+	double  	c_double;
+   }v;
+};
+
+#define GLV_CONST_DEFINE(a,b)       GLV_CONST_DEFINE2(_##a,b,a)
+#define GLV_CONST_DEFINE2(a,b,c)    struct c_const_value glv_c_##a = {.type = "c_"#b , .v.c_##b = (c)}
+
+'''
+# ------------------------------------------------------------------------------
+class   glv_c_interface_v(c_Union):
     _fields_ = [("c_size_t", c_size_t),
                 ("c_int8", c_int8),
                 ("c_uint8", c_uint8),
@@ -68,7 +142,7 @@ class   glv_c_interface_v(c_union):
                 ("c_float", c_float),
                 ("c_double", c_double)]
 
-class glv_c_interface(c_structure):
+class glv_c_interface(c_Structure):
     _fields_ = [("data_type", c_char_p),
                 ("data", glv_c_interface_v)]
 
@@ -97,3 +171,4 @@ def glv_linking_value(name):
     else:
         print('error:',name,' is not found into shared library.')
     return None
+# ------------------------------------------------------------------------------

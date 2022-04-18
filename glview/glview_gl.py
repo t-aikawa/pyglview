@@ -2,12 +2,6 @@
 Python bindings for GLVIEW.
 """
 
-#from ctypes import byref
-#from logging import exception
-#from numpy import array
-
-from glview.glview_c import glv_malloc,glv_free
-from .opengles2 import *
 from .glview_h import *
 
 from .library import (
@@ -15,10 +9,7 @@ from .library import (
     function_exists
 )
 
-GLV_COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT
-GLV_DEPTH_BUFFER_BIT = GL_DEPTH_BUFFER_BIT
-
-class GLV_T_POINT_t(c_structure):
+class GLV_T_POINT_t(c_Structure):
     """
     Wrapper for:座標
         struct glv_POINT{}
@@ -26,7 +17,7 @@ class GLV_T_POINT_t(c_structure):
     _fields_ = [("x", c_float),		# X座標
                 ("y", c_float)]	    # Y座標
 
-class GLV_T_Color_t(c_structure):
+class GLV_T_Color_t(c_Structure):
     """
     Wrapper for:rgbaカラー
         struct glv_Color{}
@@ -36,7 +27,7 @@ class GLV_T_Color_t(c_structure):
                 ("b", c_uint8),
                 ("a", c_uint8)]
 
-class GLV_T_VBO_INFO_t(c_structure):
+class GLV_T_VBO_INFO_t(c_Structure):
     """
     Wrapper for:VBO情報
         struct glv_VBO_INFO{}

@@ -4,7 +4,7 @@
 import os
 from glview import *
 
-class SHEET_USER_DATA_t(c_structure):
+class SHEET_USER_DATA_t(c_Structure):
     _fields_ = [("wiget_text_input", POINTER(glvWiget)),
                 ("wiget_enter_button", POINTER(glvWiget))]
 

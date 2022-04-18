@@ -127,7 +127,16 @@ CURSOR_V_DOUBLE_ARROW = glv_linking_value('CURSOR_V_DOUBLE_ARROW')
 CURSOR_BLANK = glv_linking_value('CURSOR_BLANK')
 CURSOR_NUM = glv_linking_value('CURSOR_NUM')
 # ------------------------------------------------------------------------------
-class glvDisplay(c_structure):
+class glvInstance(c_Structure):
+    def __init__(self):
+        c_Structure.__init__(self)
+
+class glvWindow_base(glvInstance):
+    def __init__(self):
+        glvInstance.__init__(self)
+
+# ------------------------------------------------------------------------------
+class glvDisplay(glvInstance):
     """
     Wrapper for:
         typedef	void	*glvDisplay;
@@ -135,10 +144,10 @@ class glvDisplay(c_structure):
     _fields_ = [("void_p", c_void_p)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        glvInstance.__init__(self)
         self.void_p = 0
 
-class glvWindow(c_structure):
+class glvWindow(glvWindow_base):
     """
     Wrapper for:
         typedef	void	*glvWindow;
@@ -146,10 +155,10 @@ class glvWindow(c_structure):
     _fields_ = [("void_p", c_void_p)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        glvWindow_base.__init__(self)
         self.void_p = 0
 
-class glvSheet(c_structure):
+class glvSheet(glvWindow_base):
     """
     Wrapper for:
         typedef	void	*glvSheet;
@@ -157,10 +166,10 @@ class glvSheet(c_structure):
     _fields_ = [("void_p", c_void_p)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        glvWindow_base.__init__(self)
         self.void_p = 0
 
-class glvWiget(c_structure):
+class glvWiget(glvWindow_base):
     """
     Wrapper for:
         typedef	void	*glvWiget;
@@ -168,10 +177,10 @@ class glvWiget(c_structure):
     _fields_ = [("void_p", c_void_p)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        glvWindow_base.__init__(self)
         self.void_p = 0
 
-class glvResource(c_structure):
+class glvResource(glvInstance):
     """
     Wrapper for:
         typedef	void	*glvResource;
@@ -179,7 +188,7 @@ class glvResource(c_structure):
     _fields_ = [("void_p", c_void_p)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        glvInstance.__init__(self)
         self.void_p = 0
 
 glvTime = c_uint32
@@ -187,7 +196,7 @@ glvTime = c_uint32
 glvInstanceId = c_size_t
 
 # ------------------------------------------------------------------------------
-class glv_wiget_geometry_t(c_structure):
+class glv_wiget_geometry_t(c_Structure):
     """
     Wrapper for:
         struct glv_wiget_geometry_t{}
@@ -202,7 +211,7 @@ class glv_wiget_geometry_t(c_structure):
                 ("windowId", glvInstanceId)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self.x = 0
         self.y = 0
         self.width = 0
@@ -214,7 +223,7 @@ class glv_wiget_geometry_t(c_structure):
 
 GLV_WIGET_GEOMETRY_t = glv_wiget_geometry_t
 
-class glv_wiget_status_t(c_structure):
+class glv_wiget_status_t(c_Structure):
     """
     Wrapper for:
         struct glv_wiget_status_t{}
@@ -225,7 +234,7 @@ class glv_wiget_status_t(c_structure):
 
 GLV_WIGET_STATUS_t = glv_wiget_status_t
 
-class glv_frame_info_t(c_structure):
+class glv_frame_info_t(c_Structure):
     """
     Wrapper for:
         struct glv_frame_info_t{}
@@ -255,7 +264,7 @@ class glv_frame_info_t(c_structure):
 
 GLV_FRAME_INFO_t = glv_frame_info_t
 
-class glv_w_menu_item_t(c_structure):
+class glv_w_menu_item_t(c_Structure):
     """
     Wrapper for:
         struct glv_w_menu_item_t{}
@@ -266,7 +275,7 @@ class glv_w_menu_item_t(c_structure):
                 ("next", c_int16),
                 ("functionId", c_int)]
 
-class glv_w_menu_t(c_structure):
+class glv_w_menu_t(c_Structure):
     """
     Wrapper for:
         struct glv_w_menu_t{}
@@ -278,7 +287,7 @@ class glv_w_menu_t(c_structure):
                 ("item", glv_w_menu_item_t * GLV_W_MENU_LIST_MAX)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self.id = 0
         self.num = 0
         self.width = 0
@@ -368,7 +377,7 @@ GLV_WIGET_EVENT_FUNC_focus_t = CFUNCTYPE(c_int,POINTER(glvWindow),POINTER(glvShe
 GLV_WIGET_EVENT_FUNC_terminate_t = CFUNCTYPE(c_int,POINTER(glvWiget))
 '''typedef int (*GLV_WIGET_EVENT_FUNC_terminate_t)(glvWiget wiget);'''
 # ------------------------------------------------------------------------------
-class glv_frame_listener(c_structure):
+class glv_frame_listener(c_Structure):
     """
     Wrapper for:
         struct glv_frame_listener{}
@@ -385,7 +394,7 @@ class glv_frame_listener(c_structure):
                 ("key", GLV_WINDOW_EVENT_FUNC_key_t)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self.start = GLV_WINDOW_EVENT_FUNC_start_t(0)
         self.configure = GLV_WINDOW_EVENT_FUNC_configure_t(0)
         self.terminate = GLV_WINDOW_EVENT_FUNC_terminate_t(0)
@@ -421,12 +430,12 @@ class glv_frame_listener(c_structure):
                 value = c_functype(value)
         super().__setattr__(name, value)
 
-class glv_window_listener(c_structure):
+class glv_window_listener(c_Structure):
     """
     Wrapper for:
         struct glv_window_listener{}
     """
-    _fields_ = [("_class", POINTER(c_structure)),
+    _fields_ = [("_class", POINTER(c_Structure)),
                 ("_new", GLV_WINDOW_EVENT_FUNC_new_t),
                 ("attr", c_int),
                 ("beauty", c_int),
@@ -445,7 +454,7 @@ class glv_window_listener(c_structure):
                 ("terminate", GLV_WINDOW_EVENT_FUNC_terminate_t)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self._class = c_void
         self._new = GLV_WINDOW_EVENT_FUNC_new_t(0)
         self.attr = 0
@@ -525,12 +534,12 @@ class glv_window_listener(c_structure):
         super().__setattr__(name, value)
 
 
-class glv_sheet_listener(c_structure):
+class glv_sheet_listener(c_Structure):
     """
     Wrapper for:
         struct glv_sheet_listener{}
     """
-    _fields_ = [("_class", POINTER(c_structure)),
+    _fields_ = [("_class", POINTER(c_Structure)),
                 ("_new", GLV_SHEET_EVENT_FUNC_new_t),
                 ("init", GLV_SHEET_EVENT_FUNC_init_t),
                 ("reshape", GLV_SHEET_EVENT_FUNC_reshape_t),
@@ -545,7 +554,7 @@ class glv_sheet_listener(c_structure):
                 ("terminate", GLV_SHEET_EVENT_FUNC_terminate_t)]
     
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self._class = c_void
         self._new = GLV_SHEET_EVENT_FUNC_new_t(0)
         self.init = GLV_SHEET_EVENT_FUNC_init_t(0)
@@ -612,12 +621,12 @@ class glv_sheet_listener(c_structure):
                 value = c_functype(value)
         super().__setattr__(name, value)
 
-class glv_wiget_listener(c_structure):
+class glv_wiget_listener(c_Structure):
     """
     Wrapper for:
         struct glv_wiget_listener{}
     """
-    _fields_ = [("_class", POINTER(c_structure)),
+    _fields_ = [("_class", POINTER(c_Structure)),
                 ("_new", GLV_WIGET_EVENT_FUNC_new_t),
                 ("attr", c_int),
                 ("init", GLV_WIGET_EVENT_FUNC_init_t),
@@ -630,7 +639,7 @@ class glv_wiget_listener(c_structure):
                 ("terminate", GLV_WIGET_EVENT_FUNC_terminate_t)]
 
     def __init__(self):
-        c_structure.__init__(self)
+        c_Structure.__init__(self)
         self._class = c_void
         self._new = GLV_WIGET_EVENT_FUNC_new_t(0)
         self.attr = 0
@@ -701,10 +710,10 @@ GLV_R_VALUE_TYPE__FUNCTION = glv_linking_value('GLV_R_VALUE_TYPE__FUNCTION')	# 8
 
 _GLV_R_VALUE_MAX = glv_linking_value('_GLV_R_VALUE_MAX')
 
-GLV_R_TRIGGER_t = CFUNCTYPE(c_int,POINTER(c_structure))
+GLV_R_TRIGGER_t = CFUNCTYPE(c_int,POINTER(c_Structure))
 '''typedef int (*GLV_R_TRIGGER_t)(int io,struct _glv_r_value *value);'''
 
-class   _glv_r_value_v(c_union):
+class   _glv_r_value_v(c_Union):
     """
     Wrapper for:
         struct _glv_r_value.n.v{}\n
@@ -726,7 +735,7 @@ class   _glv_r_value_v(c_union):
                 ("void_p", c_void_p),
                 ("real", c_double)]
 
-class   _glv_r_value_n(c_structure):
+class   _glv_r_value_n(c_Structure):
     """
     Wrapper for:
         struct _glv_r_value.n{}
@@ -735,14 +744,14 @@ class   _glv_r_value_n(c_structure):
                 ("abstract", c_char_p),
                 ("v", _glv_r_value_v)]
 
-class   _glv_r_value(c_structure):
+class   _glv_r_value(c_Structure):
     """
     Wrapper for:
         struct _glv_r_value{}
     """
-    _fields_ = [("link", POINTER(c_structure)),
+    _fields_ = [("link", POINTER(c_Structure)),
                 ("key", c_char_p),
-                ("instance", POINTER(c_structure)),
+                ("instance", POINTER(c_Structure)),
                 ("func", GLV_R_TRIGGER_t),
                 ("abstract", c_char_p),
                 ("type_string", c_char_p),

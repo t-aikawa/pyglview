@@ -26,7 +26,7 @@ class glv_class_instance(object):
                 instance = self.instance
             elif isinstance(instance,glv_class_instance):
                 instance = instance.instance
-            elif isinstance(instance,Structure):
+            elif isinstance(instance,glvInstance):
                 pass
             else:
                 return 0
@@ -37,7 +37,7 @@ class glv_class_instance(object):
             instance = self.instance
         elif isinstance(instance,glv_class_instance):
             instance = instance.instance
-        elif isinstance(instance,Structure):
+        elif isinstance(instance,glvInstance):
             pass
         else:
             return 0

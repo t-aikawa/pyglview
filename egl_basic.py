@@ -11,17 +11,17 @@ usleep = lambda x: time.sleep(x/1000000.0)
 from numpy import array
 from glview import *
 
-class geometry_t(c_structure):
+class geometry_t(c_Structure):
     _fields_ = [("width", c_int),
                 ("height", c_int)]
 
-class gl_param_t(c_structure):
+class gl_param_t(c_Structure):
     _fields_ = [("rotation_uniform", c_int),
                 ("pos", c_int),
                 ("col", c_int),
                 ("program", c_int)]
 
-class user_data_t(c_structure):
+class user_data_t(c_Structure):
     _fields_ = [("geometry", geometry_t),
                 ("gl", gl_param_t),
                 ("benchmark_time", c_uint64),
