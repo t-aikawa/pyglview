@@ -385,7 +385,14 @@ class glv_class_frame(glv_class_window_common):
         if self.window != None:
             print("This frame has already been created.",self)
             return [None,0]
-
+        if isinstance(glv_instance,glv_class_display):
+            self.own_display = glv_instance
+            glv_instance = glv_instance.instance
+        elif isinstance(glv_instance,glv_class_window_common):
+            self.parent_window = glv_instance
+            if hasattr(glv_instance,'own_display'):
+                self.own_display = glv_instance.own_display
+            glv_instance = glv_instance.window
         frame , frame_id = glvCreateFrameWindow(glv_instance,self.frame_listener,name,title,width,height)
         self.window = frame
         return [frame, frame_id]
@@ -443,7 +450,11 @@ class glv_class_window(glv_class_window_common):
         if self.window != None:
             print("This window has already been created.",self)
             return [None,0]
-
+        if isinstance(parent,glv_class_window_common):
+            self.parent_window = parent
+            if hasattr(parent,'own_display'):
+                self.own_display = parent.own_display
+            parent = parent.window
         window , window_id = glvCreateWindow(parent,self.window_listener,name,x,y,width,height,attr)
         self.window = window
         return [window, window_id]
@@ -452,7 +463,11 @@ class glv_class_window(glv_class_window_common):
         if self.window != None:
             print("This window has already been created.",self)
             return [None,0]
-
+        if isinstance(parent,glv_class_window_common):
+            self.parent_window = parent
+            if hasattr(parent,'own_display'):
+                self.own_display = parent.own_display
+            parent = parent.window
         window , window_id = glvCreateThreadWindow(parent,self.window_listener,name,x,y,width,height,attr)
         self.window = window
         return [window, window_id]
@@ -461,7 +476,11 @@ class glv_class_window(glv_class_window_common):
         if self.window != None:
             print("This window has already been created.",self)
             return [None,0]
-
+        if isinstance(parent,glv_class_window_common):
+            self.parent_window = parent
+            if hasattr(parent,'own_display'):
+                self.own_display = parent.own_display
+            parent = parent.window
         window , window_id = glvCreateChildWindow(parent,self.window_listener,name,x,y,width,height,attr)
         self.window = window
         return [window, window_id]

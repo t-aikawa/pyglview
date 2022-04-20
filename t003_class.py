@@ -154,15 +154,27 @@ def main():
     version = glvGetVersion()
     print('glview: version ',version)
 
-    glv_dpy = glvOpenDisplay()
+    if (1):
+        glv_dpy = glv_class_display()
+        glv_dpy.open()
 
-    frame = app_frame()
-    frame.createFrame(glv_dpy,'name','t003_class.py',600,500)
+        frame = app_frame()
+        frame.createFrame(glv_dpy,'name','t003_class.py',600,500)
 
-    glvEnterEventLoop(glv_dpy)
+        glv_dpy.enterEventLoop()
+        frame.destroy()
+        glv_dpy.close()
+    else:
+        glv_dpy = glvOpenDisplay()
 
-    frame.destroy()
-    glvCloseDisplay(glv_dpy)
+        frame = app_frame()
+        frame.createFrame(glv_dpy,'name','t003_class.py',600,500)
+
+        glvEnterEventLoop(glv_dpy)
+
+        frame.destroy()
+        glvCloseDisplay(glv_dpy)
+
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
     main()
