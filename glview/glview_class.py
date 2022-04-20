@@ -242,6 +242,7 @@ class glv_class_sheet(glv_class_window_base):
 
     def createSheet(self, window, name):
         if isinstance(window,glv_class_window_common):
+            self.own_window = window
             sheet = glvCreateSheet(window.window, self.sheet_listener,name)
         else:
             sheet = glvCreateSheet(window, self.sheet_listener,name)
@@ -320,6 +321,9 @@ class glv_class_wiget(glv_class_window_base):
         if wiget_listener is None:
             wwiget_listener = self.wiget_listener
         if isinstance(sheet,glv_class_sheet):
+            self.own_sheet = sheet
+            if hasattr(sheet,'own_window'):
+                self.own_window = sheet.own_window
             wiget = glvCreateWiget(sheet.sheet, wiget_listener, attr)
         else:
             wiget = glvCreateWiget(sheet, wiget_listener, attr)
@@ -377,12 +381,12 @@ class glv_class_frame(glv_class_window_common):
         if hasattr(self,'on_key'):
             self.frame_listener.key = self.on_key
 
-    def createFrame(self,glv_dpy,name,title,width,height):
+    def createFrame(self,glv_instance,name,title,width,height):
         if self.window != None:
             print("This frame has already been created.",self)
             return [None,0]
 
-        frame , frame_id = glvCreateFrameWindow(glv_dpy,self.frame_listener,name,title,width,height)
+        frame , frame_id = glvCreateFrameWindow(glv_instance,self.frame_listener,name,title,width,height)
         self.window = frame
         return [frame, frame_id]
 

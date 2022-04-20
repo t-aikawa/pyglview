@@ -321,7 +321,7 @@ GL_MAX_RENDERBUFFER_SIZE = glv_linking_value('GL_MAX_RENDERBUFFER_SIZE')
 GL_INVALID_FRAMEBUFFER_OPERATION = glv_linking_value('GL_INVALID_FRAMEBUFFER_OPERATION')
 
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glClearColor'):
+if function_exists(_glview,'glClearColor'):
     _glview.glClearColor.restype = c_void
     _glview.glClearColor.argtypes = [c_float,c_float,c_float,c_float]
     def glClearColor(r,g,b,a):
@@ -330,7 +330,7 @@ if function_exists(_glview, 'glClearColor'):
         '''
         _glview.glClearColor(r,g,b,a)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glvGl_Clear'):
+if function_exists(_glview,'glvGl_Clear'):
     _glview.glvGl_Clear.restype = c_void
     _glview.glvGl_Clear.argtypes = [c_uint32]
     def glClear(mask):
@@ -338,7 +338,7 @@ if function_exists(_glview, 'glvGl_Clear'):
         '''
         _glview.glvGl_Clear(mask)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glCreateShader'):
+if function_exists(_glview,'glCreateShader'):
     _glview.glCreateShader.restype = c_uint
     _glview.glCreateShader.argtypes = [c_int]
     def glCreateShader(shader_type):
@@ -346,7 +346,7 @@ if function_exists(_glview, 'glCreateShader'):
         '''
         return _glview.glCreateShader(shader_type)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glShaderSource'):
+if function_exists(_glview,'glShaderSource'):
     _glview.glShaderSource.restype = c_void
     _glview.glShaderSource.argtypes = [c_uint,c_int,POINTER(c_char_p),POINTER(c_int)]
     def glShaderSource(shader, count, string, length):
@@ -355,7 +355,7 @@ if function_exists(_glview, 'glShaderSource'):
         string = c_char_p(string.encode('utf-8'))
         _glview.glShaderSource(shader, count, string, length)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glCompileShader'):
+if function_exists(_glview,'glCompileShader'):
     _glview.glCompileShader.restype = c_void
     _glview.glCompileShader.argtypes = [c_uint]
     def glCompileShader(shader):
@@ -363,7 +363,7 @@ if function_exists(_glview, 'glCompileShader'):
         '''
         _glview.glCompileShader(shader)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glGetShaderiv'):
+if function_exists(_glview,'glGetShaderiv'):
     _glview.glGetShaderiv.restype = c_int
     _glview.glGetShaderiv.argtypes = [c_uint,c_int,POINTER(c_int)]
     def glGetShaderiv(shader,pname):
@@ -373,7 +373,7 @@ if function_exists(_glview, 'glGetShaderiv'):
         _glview.glGetShaderiv(shader,pname,params)
         return params.value
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glGetShaderInfoLog'):
+if function_exists(_glview,'glGetShaderInfoLog'):
     _glview.glGetShaderInfoLog.restype = c_void
     _glview.glGetShaderInfoLog.argtypes = [c_uint,c_int,POINTER(c_int),c_char_p]
     def glGetShaderInfoLog(shader):
@@ -388,7 +388,7 @@ if function_exists(_glview, 'glGetShaderInfoLog'):
             return infoLog.value.decode('utf-8')
         return ''
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glCreateProgram'):
+if function_exists(_glview,'glCreateProgram'):
     _glview.glCreateProgram.restype = c_uint
     _glview.glCreateProgram.argtypes = c_void
     def glCreateProgram():
@@ -396,7 +396,7 @@ if function_exists(_glview, 'glCreateProgram'):
         '''
         return _glview.glCreateProgram()
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glAttachShader'):
+if function_exists(_glview,'glAttachShader'):
     _glview.glAttachShader.restype = c_void
     _glview.glAttachShader.argtypes = [c_uint,c_uint]
     def glAttachShader(program,shader):
@@ -404,7 +404,7 @@ if function_exists(_glview, 'glAttachShader'):
         '''
         _glview.glAttachShader(program,shader)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glLinkProgram'):
+if function_exists(_glview,'glLinkProgram'):
     _glview.glLinkProgram.restype = c_void
     _glview.glLinkProgram.argtypes = [c_uint]
     def glLinkProgram(program):
@@ -412,7 +412,7 @@ if function_exists(_glview, 'glLinkProgram'):
         '''
         _glview.glLinkProgram(program)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glGetProgramiv'):
+if function_exists(_glview,'glGetProgramiv'):
     _glview.glGetProgramiv.restype = c_int
     _glview.glGetProgramiv.argtypes = [c_uint,c_int,POINTER(c_int)]
     def glGetProgramiv(program,pname):
@@ -422,7 +422,7 @@ if function_exists(_glview, 'glGetProgramiv'):
         _glview.glGetProgramiv(program,pname,params)
         return params.value
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glGetProgramInfoLog'):
+if function_exists(_glview,'glGetProgramInfoLog'):
     _glview.glGetProgramInfoLog.restype = c_void
     _glview.glGetProgramInfoLog.argtypes = [c_uint,c_int,POINTER(c_int),c_char_p]
     def glGetProgramInfoLog(program):
@@ -437,7 +437,7 @@ if function_exists(_glview, 'glGetProgramInfoLog'):
             return infoLog.value.decode('utf-8')
         return ''
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glUseProgram'):
+if function_exists(_glview,'glUseProgram'):
     _glview.glUseProgram.restype = c_void
     _glview.glUseProgram.argtypes = [c_uint]
     def glUseProgram(program):
@@ -445,7 +445,7 @@ if function_exists(_glview, 'glUseProgram'):
         '''
         _glview.glUseProgram(program)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glDeleteProgram'):
+if function_exists(_glview,'glDeleteProgram'):
     _glview.glDeleteProgram.restype = c_void
     _glview.glDeleteProgram.argtypes = [c_uint]
     def glDeleteProgram(program):
@@ -453,7 +453,7 @@ if function_exists(_glview, 'glDeleteProgram'):
         '''
         _glview.glDeleteProgram(program)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glBindAttribLocation'):
+if function_exists(_glview,'glBindAttribLocation'):
     _glview.glBindAttribLocation.restype = c_void
     _glview.glBindAttribLocation.argtypes = [c_uint,c_uint,c_char_p]
     def glBindAttribLocation(program,index,name):
@@ -461,7 +461,7 @@ if function_exists(_glview, 'glBindAttribLocation'):
         '''
         _glview.glBindAttribLocation(program,index,name.encode('utf-8'))
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glGetUniformLocation'):
+if function_exists(_glview,'glGetUniformLocation'):
     _glview.glGetUniformLocation.restype = c_int
     _glview.glGetUniformLocation.argtypes = [c_uint,c_char_p]
     def glGetUniformLocation(program,name):
@@ -469,7 +469,7 @@ if function_exists(_glview, 'glGetUniformLocation'):
         '''
         return _glview.glGetUniformLocation(program,name.encode('utf-8'))
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glViewport'):
+if function_exists(_glview,'glViewport'):
     _glview.glViewport.restype = c_void
     _glview.glViewport.argtypes = [c_int,c_int,c_int,c_int]
     def glViewport(x, y, width, height):
@@ -478,7 +478,7 @@ if function_exists(_glview, 'glViewport'):
         '''
         _glview.glViewport(x, y, width, height)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glUniformMatrix4fv'):
+if function_exists(_glview,'glUniformMatrix4fv'):
     _glview.glUniformMatrix4fv.restype = c_void
     _glview.glUniformMatrix4fv.argtypes = [c_int,c_int,c_int,POINTER(c_float)]
     def glUniformMatrix4fv(location, count, transpose, value):
@@ -490,7 +490,7 @@ if function_exists(_glview, 'glUniformMatrix4fv'):
             value = value.ctypes.data_as(POINTER(c_float))
         _glview.glUniformMatrix4fv(location, count, transpose, value)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glVertexAttribPointer'):
+if function_exists(_glview,'glVertexAttribPointer'):
     _glview.glVertexAttribPointer.restype = c_void
     _glview.glVertexAttribPointer.argtypes = [c_uint,c_int,c_int,c_int,c_int,c_void_p]
     def glVertexAttribPointer(index, size, gtype, normalized, stride, pointer):
@@ -524,7 +524,7 @@ if function_exists(_glview, 'glVertexAttribPointer'):
                 pointer = pointer.ctypes.data_as(POINTER(c_float))
         _glview.glVertexAttribPointer(index, size, gtype, normalized, stride, pointer)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glEnableVertexAttribArray'):
+if function_exists(_glview,'glEnableVertexAttribArray'):
     _glview.glEnableVertexAttribArray.restype = c_void
     _glview.glEnableVertexAttribArray.argtypes = [c_uint]
     def glEnableVertexAttribArray(index):
@@ -532,7 +532,7 @@ if function_exists(_glview, 'glEnableVertexAttribArray'):
         '''
         _glview.glEnableVertexAttribArray(index)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glDisableVertexAttribArray'):
+if function_exists(_glview,'glDisableVertexAttribArray'):
     _glview.glDisableVertexAttribArray.restype = c_void
     _glview.glDisableVertexAttribArray.argtypes = [c_uint]
     def glDisableVertexAttribArray(index):
@@ -540,7 +540,7 @@ if function_exists(_glview, 'glDisableVertexAttribArray'):
         '''
         _glview.glDisableVertexAttribArray(index)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glDrawArrays'):
+if function_exists(_glview,'glDrawArrays'):
     _glview.glDrawArrays.restype = c_void
     _glview.glDrawArrays.argtypes = [c_int,c_int,c_int]
     def glDrawArrays(mode, first, count):
@@ -548,7 +548,7 @@ if function_exists(_glview, 'glDrawArrays'):
         '''
         _glview.glDrawArrays(mode, first, count)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glEnable'):
+if function_exists(_glview,'glEnable'):
     _glview.glEnable.restype = c_void
     _glview.glEnable.argtypes = [c_int]
     def glEnable(cap):
@@ -556,7 +556,7 @@ if function_exists(_glview, 'glEnable'):
         '''
         _glview.glEnable(cap)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glDisable'):
+if function_exists(_glview,'glDisable'):
     _glview.glDisable.restype = c_void
     _glview.glDisable.argtypes = [c_int]
     def glDisable(cap):
@@ -564,7 +564,7 @@ if function_exists(_glview, 'glDisable'):
         '''
         _glview.glDisable(cap)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glBlendFunc'):
+if function_exists(_glview,'glBlendFunc'):
     _glview.glBlendFunc.restype = c_void
     _glview.glBlendFunc.argtypes = [c_int,c_int]
     def glBlendFunc(sfactor, dfactor):
@@ -572,7 +572,7 @@ if function_exists(_glview, 'glBlendFunc'):
         '''
         _glview.glBlendFunc(sfactor, dfactor)
 # ------------------------------------------------------------------------------
-if function_exists(_glview, 'glFlush'):
+if function_exists(_glview,'glFlush'):
     _glview.glFlush.restype = c_void
     _glview.glFlush.argtypes = c_void
     def glFlush():
@@ -581,85 +581,85 @@ if function_exists(_glview, 'glFlush'):
         _glview.glFlush()
 # ------------------------------------------------------------------------------
 """
-if function_exists(_es1emu, 'glEnableClientState'):
+if function_exists(_es1emu,'glEnableClientState'):
     _es1emu.glEnableClientState.restype = c_void
     _es1emu.glEnableClientState.argtypes = [c_uint]
     def glEnableClientState(array):
         _es1emu.glEnableClientState(array)
 
-if function_exists(_es1emu, 'glDisableClientState'):
+if function_exists(_es1emu,'glDisableClientState'):
     _es1emu.glDisableClientState.restype = c_void
     _es1emu.glDisableClientState.argtypes = [c_uint]
     def glDisableClientState(array):
         _es1emu.glDisableClientState(array)
 
-if function_exists(_es1emu, 'glColor4f'):
+if function_exists(_es1emu,'glColor4f'):
     _es1emu.glColor4f.restype = c_void
     _es1emu.glColor4f.argtypes = [c_float,c_float,c_float,c_float]
     def glColor4f(red,green,blue,alpha):
         _es1emu.glColor4f(red,green,blue,alpha)
 
-if function_exists(_es1emu, 'glPopMatrix'):
+if function_exists(_es1emu,'glPopMatrix'):
     _es1emu.glPopMatrix.restype = c_void
     _es1emu.glPopMatrix.argtypes = c_void
     def glPopMatrix():
         _es1emu.glPopMatrix()
 
-if function_exists(_es1emu, 'glPushMatrix'):
+if function_exists(_es1emu,'glPushMatrix'):
     _es1emu.glPushMatrix.restype = c_void
     _es1emu.glPushMatrix.argtypes = c_void
     def glPushMatrix():
         _es1emu.glPushMatrix()
 
-if function_exists(_es1emu, 'glMatrixMode'):
+if function_exists(_es1emu,'glMatrixMode'):
     _es1emu.glMatrixMode.restype = c_void
     _es1emu.glMatrixMode.argtypes = [c_uint]
     def glMatrixMode(mode):
         _es1emu.glMatrixMode(mode)
 
-if function_exists(_es1emu, 'glLoadIdentity'):
+if function_exists(_es1emu,'glLoadIdentity'):
     _es1emu.glLoadIdentity.restype = c_void
     _es1emu.glLoadIdentity.argtypes = c_void
     def glLoadIdentity():
         _es1emu.glLoadIdentity()
 
-if function_exists(_es1emu, 'glOrthof'):
+if function_exists(_es1emu,'glOrthof'):
     _es1emu.glOrthof.restype = c_void
     _es1emu.glOrthof.argtypes = [c_float,c_float,c_float,c_float,c_float,c_float]
     def glOrthof(left,right,bottom,top,zNear,zFar):
         _es1emu.glOrthof(left,right,bottom,top,zNear,zFar)
 
-if function_exists(_es1emu, 'glRotatef'):
+if function_exists(_es1emu,'glRotatef'):
     _es1emu.glRotatef.restype = c_void
     _es1emu.glRotatef.argtypes = [c_float,c_float,c_float,c_float]
     def glRotatef(angle, x, y, z):
         _es1emu.glRotatef(angle, x, y, z)
 
-if function_exists(_es1emu, 'glScalef'):
+if function_exists(_es1emu,'glScalef'):
     _es1emu.glScalef.restype = c_void
     _es1emu.glScalef.argtypes = [c_float,c_float,c_float]
     def glScalef(x, y, z):
         _es1emu.glScalef(x, y, z)
 
-if function_exists(_es1emu, 'glTranslatef'):
+if function_exists(_es1emu,'glTranslatef'):
     _es1emu.glTranslatef.restype = c_void
     _es1emu.glTranslatef.argtypes = [c_float,c_float,c_float]
     def glTranslatef(x, y, z):
         _es1emu.glTranslatef(x, y, z)
 
-if function_exists(_es1emu, 'glVertexPointer'):
+if function_exists(_es1emu,'glVertexPointer'):
     _es1emu.glVertexPointer.restype = c_void
     _es1emu.glVertexPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
     def glVertexPointer(size,type,stride,pointer):
         _es1emu.glVertexPointer(size,type,stride,pointer)
 
-if function_exists(_es1emu, 'glColorPointer'):
+if function_exists(_es1emu,'glColorPointer'):
     _es1emu.glColorPointer.restype = c_void
     _es1emu.glColorPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
     def glColorPointer(size,type,stride,pointer):
         _es1emu.glColorPointer(size,type,stride,pointer)
 
-if function_exists(_es1emu, 'glTexCoordPointer'):
+if function_exists(_es1emu,'glTexCoordPointer'):
     _es1emu.glTexCoordPointer.restype = c_void
     _es1emu.glTexCoordPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
     def glTexCoordPointer(size,type,stride,pointer):

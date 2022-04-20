@@ -49,10 +49,22 @@ class   app_sheet(glv_class_sheet):
                 # 引数のwindow,sheet,wiget等からインスタンスを生成した場合、
                 # インスタンスが持つローカル変数は初期化されるので、
                 # 内部の値にアクセスする場合は、onReDrawやsetValue,getValue等の
-                # glviewが提供するインターフェースを使用する事
-                window1 = app_window(glv_win)
+                # glviewが提供するインターフェースを使用する事。
+                # または、windowがglv_class_windowで生成されている場合は、
+                # self.own_windowでwindowインスタンスを参照できる。
+                if hasattr(self,'own_window'):
+                    window1 = self.own_window
+                else:
+                    window1 = app_window(glv_win)
                 window1.setValue("text","S",string)
                 window1.onReDraw()
+
+                # app_window(glv_win)でwindowインスタンスを生成した場合、
+                # 下記カウンターは、新しく生成されてしまうので、
+                # 正しく参照できない。
+                # self.own_windowの場合は、正しく参照できる。
+                draw_count = window1.get_draw_count()
+                print("draw_count = ",draw_count)
             else:
                 glv_setValue(glv_win,"text","S",string)
                 glvOnReDraw(glv_win)
@@ -79,6 +91,11 @@ class   app_window(glv_class_window):
     def __init__(self, window = None):
         glv_class_window.__init__(self, window)
 
+        self.draw_count = 0
+
+    def get_draw_count(self):
+        return(self.draw_count)
+
     def redraw(self,window):
         glClearColor(0.5,0.5,0.5,1.0)
         glClear(GL_COLOR_BUFFER_BIT)
@@ -89,7 +106,8 @@ class   app_window(glv_class_window):
         glvFont_SetBkgdColorRGBA(255,255,255,255)
         glvFont_SetPosition(0,0)
         
-        glvFont_printf("テキスト入力のテストです\n")
+        self.draw_count += 1
+        glvFont_printf("テキスト入力のテストです{}\n",self.draw_count)
         glvFont_printf("{}\n","Edit the text and press 'Enter'")
 
         string = self.getValue("text","S",str)
