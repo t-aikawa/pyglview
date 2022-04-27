@@ -3,6 +3,7 @@ Python bindings for GLVIEW.
 """
 
 from .glview_h import *
+from numpy import ndarray
 
 from .library import (
     glview as _glview,
@@ -378,6 +379,9 @@ if function_exists(_glview,'glvGl_GenTextures'):
         '''
         * @brief		テクスチャ設定
         '''
+        if type(pByteArray) is ndarray:
+            # numpyのarrayの場合、POINTER(c_uint8)に変換する
+            pByteArray = pByteArray.ctypes.data_as(POINTER(c_uint8))
         return _glview.glvGl_GenTextures(pByteArray,width,height)
 
 #void glvGl_DeleteTextures(uint32_t *pTextureID);
@@ -388,6 +392,7 @@ if function_exists(_glview,'glvGl_DeleteTextures'):
         '''
         * @brief		テクスチャ解放
         '''
+        pTextureID = c_uint32(pTextureID)
         _glview.glvGl_DeleteTextures(pTextureID)
 
 #void glvGl_DrawTextures(uint32_t textureId, const GLV_T_POINT_t *pSquares);
@@ -403,7 +408,7 @@ if function_exists(_glview,'glvGl_DrawTextures'):
 #void glvGl_DrawTexturesEx(uint32_t textureId,float x, float y, float width, float height, float spot_x, float spot_y, float rotation);
 if function_exists(_glview,'glvGl_DrawTexturesEx'):
     _glview.glvGl_DrawTexturesEx.restype = c_void
-    _glview.glvGl_DrawTexturesEx.argtypes = [c_uint32,POINTER(GLV_T_POINT_t),c_float,c_float,c_float,c_float,c_float,c_float,c_float]
+    _glview.glvGl_DrawTexturesEx.argtypes = [c_uint32,c_float,c_float,c_float,c_float,c_float,c_float,c_float]
     def glvGl_DrawTexturesEx(textureId, x, y, width, height, spot_x, spot_y, rotation):
         '''
         * @brief		テクスチャ描画

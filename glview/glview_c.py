@@ -89,7 +89,7 @@ if function_exists(_glview,'glvEscapeEventLoop'):
         Escape event loop.
 
         Wrapper for:
-            void glvEscapeEventLoop(glvDisplay glv_dpy);
+            void glvEscapeEventLoop(void *glv_instance);
         """
         _glview.glvEscapeEventLoop(glv_instance)
 # ------------------------------------------------------------------------------
@@ -1153,14 +1153,6 @@ if function_exists(_glview,'glv_memcpy'):
         elif type(byref(src)) is type(byref(c_int())):
             src = byref(src)
         return _glview.glv_memcpy(dest,src,size)
-# ------------------------------------------------------------------------------
-def glv__cast_types_c2py(a):
-    if type(a) is int:
-        return a
-    elif type(a) is float:
-        return a
-    else:
-        return a.value
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glv__py_print_array'):
     _glview.glv__py_print_array.restype = c_void

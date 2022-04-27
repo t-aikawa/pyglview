@@ -7,7 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 __copyright__    = 'Copyright (c) 2022 t-aikawa'
-__version__      = '0.0.1'
+__version__      = '0.0.2'
 __license__      = 'MIT'
 __author__       = 'Tetsumori Aikawa'
 __author_email__ = 'aikawat@jcom.home.ne.jp'

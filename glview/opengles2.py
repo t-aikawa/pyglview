@@ -320,103 +320,687 @@ GL_RENDERBUFFER_BINDING = glv_linking_value('GL_RENDERBUFFER_BINDING')
 GL_MAX_RENDERBUFFER_SIZE = glv_linking_value('GL_MAX_RENDERBUFFER_SIZE')
 GL_INVALID_FRAMEBUFFER_OPERATION = glv_linking_value('GL_INVALID_FRAMEBUFFER_OPERATION')
 
+# typedef khronos_int8_t GLbyte;
+# typedef khronos_float_t GLclampf;
+# typedef khronos_int32_t GLfixed;
+# typedef khronos_int16_t GLshort;
+# typedef khronos_uint16_t GLushort;
+c_GLvoid_p    = c_void_p  # typedef void GLvoid;
+# typedef struct __GLsync *GLsync;
+# typedef khronos_int64_t GLint64;
+# typedef khronos_uint64_t GLuint64;
+c_GLenum      = c_uint    # typedef unsigned int GLenum;
+c_GLuint      = c_uint    # typedef unsigned int GLuint;
+c_GLchar_p    = c_char_p  # typedef char GLchar;
+c_GLfloat     = c_float   # typedef khronos_float_t GLfloat;
+c_GLsizeiptr  = c_long    # typedef khronos_ssize_t GLsizeiptr;
+c_GLintptr    = c_long    # typedef khronos_intptr_t GLintptr;
+c_GLbitfield  = c_uint    # typedef unsigned int GLbitfield;
+c_GLint       = c_int     # typedef int GLint;
+c_GLboolean   = c_uint8   # typedef unsigned char GLboolean;
+c_GLsizei     = c_int     # typedef int GLsizei;
+c_GLubyte_p   = c_char_p  # typedef khronos_uint8_t GLubyte;
+
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glClearColor'):
-    _glview.glClearColor.restype = c_void
-    _glview.glClearColor.argtypes = [c_float,c_float,c_float,c_float]
-    def glClearColor(r,g,b,a):
+if function_exists(_glview,'glActiveTexture'):
+    _glview.glActiveTexture.restype = c_void
+    _glview.glActiveTexture.argtypes = [c_GLenum]
+    def glActiveTexture(texture):
         '''
-        * @brief		ClearColor
+        void glActiveTexture (GLenum texture);
         '''
-        _glview.glClearColor(r,g,b,a)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glvGl_Clear'):
-    _glview.glvGl_Clear.restype = c_void
-    _glview.glvGl_Clear.argtypes = [c_uint32]
-    def glClear(mask):
-        '''
-        '''
-        _glview.glvGl_Clear(mask)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glCreateShader'):
-    _glview.glCreateShader.restype = c_uint
-    _glview.glCreateShader.argtypes = [c_int]
-    def glCreateShader(shader_type):
-        '''
-        '''
-        return _glview.glCreateShader(shader_type)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glShaderSource'):
-    _glview.glShaderSource.restype = c_void
-    _glview.glShaderSource.argtypes = [c_uint,c_int,POINTER(c_char_p),POINTER(c_int)]
-    def glShaderSource(shader, count, string, length):
-        '''
-        '''
-        string = c_char_p(string.encode('utf-8'))
-        _glview.glShaderSource(shader, count, string, length)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glCompileShader'):
-    _glview.glCompileShader.restype = c_void
-    _glview.glCompileShader.argtypes = [c_uint]
-    def glCompileShader(shader):
-        '''
-        '''
-        _glview.glCompileShader(shader)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glGetShaderiv'):
-    _glview.glGetShaderiv.restype = c_int
-    _glview.glGetShaderiv.argtypes = [c_uint,c_int,POINTER(c_int)]
-    def glGetShaderiv(shader,pname):
-        '''
-        '''
-        params = c_int(0)
-        _glview.glGetShaderiv(shader,pname,params)
-        return params.value
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glGetShaderInfoLog'):
-    _glview.glGetShaderInfoLog.restype = c_void
-    _glview.glGetShaderInfoLog.argtypes = [c_uint,c_int,POINTER(c_int),c_char_p]
-    def glGetShaderInfoLog(shader):
-        '''
-        '''
-        bufSize = int(glGetShaderiv(shader, GL_INFO_LOG_LENGTH)) # GL_INFO_LOG_LENGTH:null文字を含む長さ
-        print("bufSize",bufSize)
-        if bufSize > 0:
-            infoLog = ctypes.create_string_buffer(bufSize)
-            length = c_int(0)
-            _glview.glGetShaderInfoLog(shader,bufSize,length,infoLog)
-            return infoLog.value.decode('utf-8')
-        return ''
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glCreateProgram'):
-    _glview.glCreateProgram.restype = c_uint
-    _glview.glCreateProgram.argtypes = c_void
-    def glCreateProgram():
-        '''
-        '''
-        return _glview.glCreateProgram()
+        _glview.glActiveTexture(texture)
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glAttachShader'):
     _glview.glAttachShader.restype = c_void
-    _glview.glAttachShader.argtypes = [c_uint,c_uint]
+    _glview.glAttachShader.argtypes = [c_GLuint,c_GLuint]
     def glAttachShader(program,shader):
         '''
+        void glAttachShader (GLuint program, GLuint shader);
         '''
         _glview.glAttachShader(program,shader)
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glLinkProgram'):
-    _glview.glLinkProgram.restype = c_void
-    _glview.glLinkProgram.argtypes = [c_uint]
-    def glLinkProgram(program):
+if function_exists(_glview,'glBindAttribLocation'):
+    _glview.glBindAttribLocation.restype = c_void
+    _glview.glBindAttribLocation.argtypes = [c_GLuint,c_GLuint,c_GLchar_p]
+    def glBindAttribLocation(program,index,name):
         '''
+        void glBindAttribLocation (GLuint program, GLuint index, const GLchar *name);
         '''
-        _glview.glLinkProgram(program)
+        _glview.glBindAttribLocation(program,index,name.encode('utf-8'))
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBindBuffer'):
+    _glview.glBindBuffer.restype = c_void
+    _glview.glBindBuffer.argtypes = [c_GLenum,c_GLuint]
+    def glBindBuffer(target, buffer):
+        '''
+        void glBindBuffer (GLenum target, GLuint buffer);
+        '''
+        _glview.glBindBuffer(target, buffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBindFramebuffer'):
+    _glview.glBindFramebuffer.restype = c_void
+    _glview.glBindFramebuffer.argtypes = [c_GLenum,c_GLuint]
+    def glBindFramebuffer(target, framebuffer):
+        '''
+        void glBindFramebuffer (GLenum target, GLuint framebuffer);
+        '''
+        _glview.glBindFramebuffer(target, framebuffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBindRenderbuffer'):
+    _glview.glBindRenderbuffer.restype = c_void
+    _glview.glBindRenderbuffer.argtypes = [c_GLenum,c_GLuint]
+    def glBindRenderbuffer(target, renderbuffer):
+        '''
+        void glBindRenderbuffer (GLenum target, GLuint renderbuffer);
+        '''
+        _glview.glBindRenderbuffer(target, renderbuffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBindTexture'):
+    _glview.glBindTexture.restype = c_void
+    _glview.glBindTexture.argtypes = [c_GLenum,c_GLuint]
+    def glBindTexture(target,texture):
+        '''
+        void glBindTexture (GLenum target, GLuint texture);
+        '''
+        _glview.glBindTexture(target,texture)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBlendColor'):
+    _glview.glBlendColor.restype = c_void
+    _glview.glBlendColor.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glBlendColor(red, green, blue, alpha):
+        '''
+        void glBlendColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+        '''
+        _glview.glBlendColor(red, green, blue, alpha)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBlendEquation'):
+    _glview.glBlendEquation.restype = c_void
+    _glview.glBlendEquation.argtypes = [c_GLenum]
+    def glBlendEquation(mode):
+        '''
+        void glBlendEquation (GLenum mode);
+        '''
+        _glview.glBlendEquation(mode)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBlendEquationSeparate'):
+    _glview.glBlendEquationSeparate.restype = c_void
+    _glview.glBlendEquationSeparate.argtypes = [c_GLenum,c_GLenum]
+    def glBlendEquationSeparate(modeRGB, modeAlpha):
+        '''
+        void glBlendEquationSeparate (GLenum modeRGB, GLenum modeAlpha);
+        '''
+        _glview.glBlendEquationSeparate(modeRGB, modeAlpha)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBlendFunc'):
+    _glview.glBlendFunc.restype = c_void
+    _glview.glBlendFunc.argtypes = [c_GLenum,c_GLenum]
+    def glBlendFunc(sfactor, dfactor):
+        '''
+        void glBlendFunc (GLenum sfactor, GLenum dfactor);
+        '''
+        _glview.glBlendFunc(sfactor, dfactor)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBlendFuncSeparate'):
+    _glview.glBlendFuncSeparate.restype = c_void
+    _glview.glBlendFuncSeparate.argtypes = [c_GLenum,c_GLenum,c_GLenum,c_GLenum]
+    def glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha):
+        '''
+        void glBlendFuncSeparate (GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
+        '''
+        _glview.glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBufferData'):
+    _glview.glBufferData.restype = c_void
+    _glview.glBufferData.argtypes = [c_GLenum,c_GLsizeiptr,c_void_p,c_GLenum]
+    def glBufferData(target, size, data, usage):
+        '''
+        void glBufferData (GLenum target, GLsizeiptr size, const void *data, GLenum usage);
+        '''
+        if type(data) is int:
+            # mallocで確保したメモリのアドレスをc_void_pでリターンするとその変数のtypeがintになる
+            # ので、そのまま、アドレスとして渡すことができる
+            pass
+        elif type(byref(data)) is type(byref(c_int())):
+            # mallocで確保したメモリのアドレスを構造体のPOINTER、contentsにキャストして使用していた場合、
+            # アドレスはbyrefで求めることができる
+            # data = cast(glv_malloc(sizeof(GLV_T_POINT_t)),POINTER(GLV_T_POINT_t)).contents
+            data = byref(data)
+        elif type(data) is ndarray:
+            # numpyのarrayの場合、c_void_p型に変換する
+            data = data.ctypes.data_as(c_void_p)
+        _glview.glBufferData(target, size, data, usage)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glBufferSubData'):
+    _glview.glBufferSubData.restype = c_void
+    _glview.glBufferSubData.argtypes = [c_GLenum,c_GLintptr,c_GLsizeiptr,c_void_p]
+    def glBufferSubData(target, offset, size, data):
+        '''
+        void glBufferSubData (GLenum target, GLintptr offset, GLsizeiptr size, const void *data);
+        '''
+        if type(data) is int:
+            # mallocで確保したメモリのアドレスをc_void_pでリターンするとその変数のtypeがintになる
+            # ので、そのまま、アドレスとして渡すことができる
+            pass
+        elif type(byref(data)) is type(byref(c_int())):
+            # mallocで確保したメモリのアドレスを構造体のPOINTER、contentsにキャストして使用していた場合、
+            # アドレスはbyrefで求めることができる
+            # data = cast(glv_malloc(sizeof(GLV_T_POINT_t)),POINTER(GLV_T_POINT_t)).contents
+            data = byref(data)
+        elif type(data) is ndarray:
+            # numpyのarrayの場合、c_void_p型に変換する
+            data = data.ctypes.data_as(c_void_p)
+        _glview.glBufferSubData(target, offset, size, data)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCheckFramebufferStatus'):
+    _glview.glCheckFramebufferStatus.restype = c_GLenum
+    _glview.glCheckFramebufferStatus.argtypes = [c_GLenum]
+    def glCheckFramebufferStatus(target):
+        '''
+        GLenum glCheckFramebufferStatus (GLenum target);
+        '''
+        return _glview.glCheckFramebufferStatus(target)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glClear'):
+    _glview.glvGl_Clear.restype = c_void
+    _glview.glvGl_Clear.argtypes = [c_GLbitfield]
+    def glClear(mask):
+        '''
+        void glClear (GLbitfield mask);
+        '''
+        _glview.glvGl_Clear(mask)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glClearColor'):
+    _glview.glClearColor.restype = c_void
+    _glview.glClearColor.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glClearColor(red, green, blue, alpha):
+        '''
+        void glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+        '''
+        _glview.glClearColor(red, green, blue, alpha)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glClearDepthf'):
+    _glview.glClearDepthf.restype = c_void
+    _glview.glClearDepthf.argtypes = [c_GLfloat]
+    def glClearDepthf(d):
+        '''
+        void glClearDepthf (GLfloat d);
+        '''
+        _glview.glClearDepthf(d)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glClearStencil'):
+    _glview.glClearStencil.restype = c_void
+    _glview.glClearStencil.argtypes = [c_GLint]
+    def glClearStencil(s):
+        '''
+        void glClearStencil (GLint s);
+        '''
+        _glview.glClearStencil(s)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glColorMask'):
+    _glview.glColorMask.restype = c_void
+    _glview.glColorMask.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glColorMask(red, green, blue, alpha):
+        '''
+        void glColorMask (GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+        '''
+        _glview.glColorMask(red, green, blue, alpha)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCompileShader'):
+    _glview.glCompileShader.restype = c_void
+    _glview.glCompileShader.argtypes = [c_GLuint]
+    def glCompileShader(shader):
+        '''
+        void glCompileShader (GLuint shader);
+        '''
+        _glview.glCompileShader(shader)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCompressedTexImage2D'):
+    _glview.glCompressedTexImage2D.restype = c_void
+    _glview.glCompressedTexImage2D.argtypes = [c_GLenum,c_GLint,c_GLenum,c_GLsizei,c_GLsizei,c_GLint,c_GLsizei,c_void_p]
+    def glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data):
+        '''
+        void glCompressedTexImage2D (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data);
+        '''
+        if type(data) is int:
+            # mallocで確保したメモリのアドレスをc_void_pでリターンするとその変数のtypeがintになる
+            # ので、そのまま、アドレスとして渡すことができる
+            pass
+        elif type(byref(data)) is type(byref(c_int())):
+            # mallocで確保したメモリのアドレスを構造体のPOINTER、contentsにキャストして使用していた場合、
+            # アドレスはbyrefで求めることができる
+            # data = cast(glv_malloc(sizeof(GLV_T_POINT_t)),POINTER(GLV_T_POINT_t)).contents
+            data = byref(data)
+        elif type(data) is ndarray:
+            # numpyのarrayの場合、c_void_p型に変換する
+            data = data.ctypes.data_as(c_void_p)
+        _glview.glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCompressedTexSubImage2D'):
+    _glview.glCompressedTexSubImage2D.restype = c_void
+    _glview.glCompressedTexSubImage2D.argtypes = [c_GLenum, c_GLint, c_GLint, c_GLint, c_GLsizei, c_GLsizei, c_GLenum, c_GLsizei,c_void_p]
+    def glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data):
+        '''
+        void glCompressedTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data);
+        '''
+        if type(data) is int:
+            # mallocで確保したメモリのアドレスをc_void_pでリターンするとその変数のtypeがintになる
+            # ので、そのまま、アドレスとして渡すことができる
+            pass
+        elif type(byref(data)) is type(byref(c_int())):
+            # mallocで確保したメモリのアドレスを構造体のPOINTER、contentsにキャストして使用していた場合、
+            # アドレスはbyrefで求めることができる
+            # data = cast(glv_malloc(sizeof(GLV_T_POINT_t)),POINTER(GLV_T_POINT_t)).contents
+            data = byref(data)
+        elif type(data) is ndarray:
+            # numpyのarrayの場合、c_void_p型に変換する
+            data = data.ctypes.data_as(c_void_p)
+        _glview.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCopyTexImage2D'):
+    _glview.glCopyTexImage2D.restype = c_void
+    _glview.glCopyTexImage2D.argtypes = [c_GLenum, c_GLint, c_GLenum , c_GLint, c_GLint, c_GLsizei, c_GLsizei, c_GLint]
+    def glCopyTexImage2D(target, level, internalformat, x, y, width, height, border):
+        '''
+        void glCopyTexImage2D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
+        '''
+        _glview.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCopyTexSubImage2D'):
+    _glview.glCopyTexSubImage2D.restype = c_void
+    _glview.glCopyTexSubImage2D.argtypes = [c_GLenum, c_GLint, c_GLint, c_GLint, c_GLint, c_GLint, c_GLsizei, c_GLsizei]
+    def glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height):
+        '''
+        void glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+        '''
+        _glview.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCreateProgram'):
+    _glview.glCreateProgram.restype = c_GLuint
+    _glview.glCreateProgram.argtypes = c_void
+    def glCreateProgram():
+        '''
+        GLuint glCreateProgram (void);
+        '''
+        return _glview.glCreateProgram()
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCreateShader'):
+    _glview.glCreateShader.restype = c_GLuint
+    _glview.glCreateShader.argtypes = [c_GLenum]
+    def glCreateShader(shader_type):
+        '''
+        GLuint glCreateShader (GLenum type);
+        '''
+        return _glview.glCreateShader(shader_type)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glCullFace'):
+    _glview.glCullFace.restype = c_void
+    _glview.glCullFace.argtypes = [c_GLenum]
+    def glCullFace(mode):
+        '''
+        void glCullFace (GLenum mode);
+        '''
+        _glview.glCullFace(mode)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteBuffers'):
+    _glview.glDeleteBuffers.restype = c_void
+    _glview.glDeleteBuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glDeleteBuffers(n, buffers):
+        '''
+        void  glDeleteBuffers (GLsizei n, const GLuint *buffers);
+        '''
+        _glview.glDeleteBuffers(n, buffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteFramebuffers'):
+    _glview.glDeleteFramebuffers.restype = c_void
+    _glview.glDeleteFramebuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glDeleteFramebuffers(n, framebuffers):
+        '''
+        void glDeleteFramebuffers (GLsizei n, const GLuint *framebuffers);
+        '''
+        _glview.glDeleteFramebuffers(n, framebuffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteProgram'):
+    _glview.glDeleteProgram.restype = c_void
+    _glview.glDeleteProgram.argtypes = [c_GLuint]
+    def glDeleteProgram(program):
+        '''
+        void glDeleteProgram (GLuint program);
+        '''
+        _glview.glDeleteProgram(program)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteRenderbuffers'):
+    _glview.glDeleteRenderbuffers.restype = c_void
+    _glview.glDeleteRenderbuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glDeleteRenderbuffers(n, renderbuffers):
+        '''
+        void glDeleteRenderbuffers (GLsizei n, const GLuint *renderbuffers);
+        '''
+        _glview.glDeleteRenderbuffers(n, renderbuffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteShader'):
+    _glview.glDeleteShader.restype = c_void
+    _glview.glDeleteShader.argtypes = [c_GLuint]
+    def glDeleteShader(shader):
+        '''
+        void  glDeleteShader (GLuint shader);
+        '''
+        _glview.glDeleteShader(shader)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDeleteTextures'):
+    _glview.glDeleteTextures.restype = c_void
+    _glview.glDeleteTextures.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glDeleteTextures(n, textures):
+        '''
+        void  glDeleteTextures (GLsizei n, const GLuint *textures);
+        '''
+        _glview.glDeleteTextures(n, textures)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDepthFunc'):
+    _glview.glDepthFunc.restype = c_void
+    _glview.glDepthFunc.argtypes = [c_GLenum]
+    def glDepthFunc(func):
+        '''
+        void glDepthFunc (GLenum func);
+        '''
+        _glview.glDepthFunc(func)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDepthMask'):
+    _glview.glDepthMask.restype = c_void
+    _glview.glDepthMask.argtypes = [c_GLboolean]
+    def glDepthMask(flag):
+        '''
+        void glDepthMask (GLboolean flag);
+        '''
+        _glview.glDepthMask(flag)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDepthRangef'):
+    _glview.glDepthRangef.restype = c_void
+    _glview.glDepthRangef.argtypes = [c_GLfloat,c_GLfloat]
+    def glDepthRangef(n, f):
+        '''
+        void glDepthRangef (GLfloat n, GLfloat f);
+        '''
+        _glview.glDepthRangef(n, f)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDetachShader'):
+    _glview.glDetachShader.restype = c_void
+    _glview.glDetachShader.argtypes = [c_GLuint,c_GLuint]
+    def glDetachShader(program, shader):
+        '''
+        void glDetachShader (GLuint program, GLuint shader);
+        '''
+        _glview.glDetachShader(program, shader)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDisable'):
+    _glview.glDisable.restype = c_void
+    _glview.glDisable.argtypes = [c_GLenum]
+    def glDisable(cap):
+        '''
+        void glDisable (GLenum cap);
+        '''
+        _glview.glDisable(cap)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDisableVertexAttribArray'):
+    _glview.glDisableVertexAttribArray.restype = c_void
+    _glview.glDisableVertexAttribArray.argtypes = [c_GLuint]
+    def glDisableVertexAttribArray(index):
+        '''
+        void glDisableVertexAttribArray (GLuint index);
+        '''
+        _glview.glDisableVertexAttribArray(index)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDrawArrays'):
+    _glview.glDrawArrays.restype = c_void
+    _glview.glDrawArrays.argtypes = [c_GLenum,c_GLint,c_GLsizei]
+    def glDrawArrays(mode, first, count):
+        '''
+        void glDrawArrays (GLenum mode, GLint first, GLsizei count);
+        '''
+        _glview.glDrawArrays(mode, first, count)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glDrawElements'):
+    _glview.glDrawElements.restype = c_void
+    _glview.glDrawElements.argtypes = [c_GLenum,c_GLsizei,c_GLenum,c_void_p]
+    def glDrawElements(mode, count, gtype, indices):
+        '''
+        void GL_APIENTRY glDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices);
+        '''
+        if type(indices) is ndarray:
+            # numpyのarrayの場合、typeに対応したPOINTER型に変換する
+            # glDrawElements
+            #   GL_UNSIGNED_INT,GL_UNSIGNED_BYTE,GL_UNSIGNED_SHORT
+            if gtype == GL_UNSIGNED_INT:
+                indices = indices.ctypes.data_as(POINTER(c_uint32))
+            elif gtype == GL_UNSIGNED_BYTE:
+                indices = indices.ctypes.data_as(POINTER(c_uint8))
+            elif gtype == GL_UNSIGNED_SHORT:
+                indices = indices.ctypes.data_as(POINTER(c_uint16))
+            else:
+                # 不明なtypeの場合、GL_UNSIGNED_INTとする
+                indices = indices.ctypes.data_as(POINTER(c_uint32))
+        _glview.glDrawElements(mode, count, gtype, indices)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glEnable'):
+    _glview.glEnable.restype = c_void
+    _glview.glEnable.argtypes = [c_GLenum]
+    def glEnable(cap):
+        '''
+        void glEnable (GLenum cap);
+        '''
+        _glview.glEnable(cap)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glEnableVertexAttribArray'):
+    _glview.glEnableVertexAttribArray.restype = c_void
+    _glview.glEnableVertexAttribArray.argtypes = [c_GLuint]
+    def glEnableVertexAttribArray(index):
+        '''
+        void glEnableVertexAttribArray (GLuint index);
+        '''
+        _glview.glEnableVertexAttribArray(index)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glFinish'):
+    _glview.glFinish.restype = c_void
+    _glview.glFinish.argtypes = c_void
+    def glFinish():
+        '''
+        void glFinish (void);
+        '''
+        _glview.glFinish()
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glFlush'):
+    _glview.glFlush.restype = c_void
+    _glview.glFlush.argtypes = c_void
+    def glFlush():
+        '''
+        void glFlush (void);
+        '''
+        _glview.glFlush()
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glFramebufferRenderbuffer'):
+    _glview.glFramebufferRenderbuffer.restype = c_void
+    _glview.glFramebufferRenderbuffer.argtypes = [c_GLenum,c_GLenum,c_GLenum,c_GLuint]
+    def glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer):
+        '''
+        void glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+        '''
+        _glview.glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glFramebufferTexture2D'):
+    _glview.glFramebufferTexture2D.restype = c_void
+    _glview.glFramebufferTexture2D.argtypes = [c_GLenum,c_GLenum,c_GLenum,c_GLuint,c_GLint]
+    def glFramebufferTexture2D(target, attachment, textarget, texture, level):
+        '''
+        void glFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+        '''
+        _glview.glFramebufferTexture2D(target, attachment, textarget, texture, level)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glFrontFace'):
+    _glview.glFrontFace.restype = c_void
+    _glview.glFrontFace.argtypes = [c_GLenum]
+    def glFrontFace(mode):
+        '''
+        void glFrontFace (GLenum mode);
+        '''
+        _glview.glFrontFace(mode)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGenBuffers'):
+    _glview.glGenBuffers.restype = c_void
+    _glview.glGenBuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glGenBuffers(n,buffers):
+        '''
+        void glGenBuffers (GLsizei n, GLuint *buffers);
+        '''
+        _glview.glGenBuffers(n,buffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGenerateMipmap'):
+    _glview.glGenerateMipmap.restype = c_void
+    _glview.glGenerateMipmap.argtypes = [c_GLenum]
+    def glGenerateMipmap(target):
+        '''
+        void glGenerateMipmap (GLenum target);
+        '''
+        _glview.glGenerateMipmap(target)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGenFramebuffers'):
+    _glview.glGenFramebuffers.restype = c_void
+    _glview.glGenFramebuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glGenFramebuffers(n,framebuffers):
+        '''
+        void glGenFramebuffers (GLsizei n, GLuint *framebuffers);
+        '''
+        _glview.glGenFramebuffers(n,framebuffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGenRenderbuffers'):
+    _glview.glGenRenderbuffers.restype = c_void
+    _glview.glGenRenderbuffers.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glGenRenderbuffers(n,renderbuffers):
+        '''
+        void glGenRenderbuffers (GLsizei n, GLuint *renderbuffers);
+        '''
+        _glview.glGenRenderbuffers(n,renderbuffers)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGenTextures'):
+    _glview.glGenTextures.restype = c_void
+    _glview.glGenTextures.argtypes = [c_GLsizei,POINTER(c_GLuint)]
+    def glGenTextures(n,textures):
+        '''
+        void  glGenTextures (GLsizei n, GLuint *textures);
+        '''
+        _glview.glGenTextures(n,textures)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetActiveAttrib'):
+    _glview.glGetActiveAttrib.restype = c_void
+    _glview.glGetActiveAttrib.argtypes = [c_GLuint, c_GLuint, c_GLsizei, POINTER(c_GLsizei), POINTER(c_GLint), POINTER(c_GLenum),c_GLchar_p]
+    def glGetActiveAttrib(program,index):
+        '''
+        void glGetActiveAttrib (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
+        '''
+        bufSize = int(glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH)) # GL_ACTIVE_ATTRIBUTE_MAX_LENGTH:null文字を含む長さ
+        name = create_string_buffer(bufSize)
+        length = c_GLsizei(0)
+        size = c_GLint(0)
+        gtype = c_GLenum(0)
+        _glview.glGetActiveAttrib(program,index,bufSize,length, size, gtype, name)
+        return [length.value,size.value,gtype.value,name.value.decode('utf-8')]
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetActiveUniform'):
+    _glview.glGetActiveUniform.restype = c_void
+    _glview.glGetActiveUniform.argtypes = [c_GLuint, c_GLuint, c_GLsizei, POINTER(c_GLsizei), POINTER(c_GLint), POINTER(c_GLenum),c_GLchar_p]
+    def glGetActiveUniform(program,index):
+        '''
+        void glGetActiveUniform (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
+        '''
+        bufSize = int(glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH)) # GL_ACTIVE_UNIFORM_MAX_LENGTH:null文字を含む長さ
+        name = create_string_buffer(bufSize)
+        length = c_GLsizei(0)
+        size = c_GLint(0)
+        gtype = c_GLenum(0)
+        _glview.glGetActiveUniform(program,index,bufSize,length, size, gtype, name)
+        return [length.value,size.value,gtype.value,name.value.decode('utf-8')]
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetAttachedShaders'):
+    _glview.glGetAttachedShaders.restype = c_void
+    _glview.glGetAttachedShaders.argtypes = [c_GLuint, c_GLsizei, POINTER(c_GLsizei), POINTER(c_GLuint)]
+    def glGetAttachedShaders(program):
+        '''
+        void glGetAttachedShaders (GLuint program, GLsizei maxCount, GLsizei *count, GLuint *shaders);
+        '''
+        maxCount = int(glGetProgramiv(program, GL_ATTACHED_SHADERS)) # GL_ATTACHED_SHADERS:null文字を含む長さ
+        count = c_GLsizei(0)
+        shaders = c_GLuint(0) * maxCount
+        _glview.glGetAttachedShaders(program,maxCount,count,shaders)
+        return shaders[:count]
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetAttribLocation'):
+    _glview.glGetAttribLocation.restype = c_GLint
+    _glview.glGetAttribLocation.argtypes = [c_GLuint,c_GLchar_p]
+    def glGetAttribLocation(program,name):
+        '''
+        GLint glGetAttribLocation (GLuint program, const GLchar *name);
+        '''
+        return _glview.glGetAttribLocation(program,name.encode('utf-8'))
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetBooleanv'):
+    _glview.glGetBooleanv.restype = c_void
+    _glview.glGetBooleanv.argtypes = [c_GLenum,POINTER(c_GLboolean)]
+    def glGetBooleanv(pname,data):
+        '''
+        void glGetBooleanv (GLenum pname, GLboolean *data);
+        '''
+        _glview.glGetBooleanv(pname,data)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetBufferParameteriv'):
+    _glview.glGetBufferParameteriv.restype = c_void
+    _glview.glGetBufferParameteriv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLint)]
+    def glGetBufferParameteriv(target,pname,params):
+        '''
+        void glGetBufferParameteriv (GLenum target, GLenum pname, GLint *params);
+        '''
+        _glview.glGetBufferParameteriv(target,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetError'):
+    _glview.glGetError.restype = c_GLenum
+    _glview.glGetError.argtypes = c_void
+    def glGetError():
+        '''
+        GLenum glGetError (void);
+        '''
+        return _glview.glGetError()
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetFloatv'):
+    _glview.glGetFloatv.restype = c_void
+    _glview.glGetFloatv.argtypes = [c_GLenum,POINTER(c_GLfloat)]
+    def glGetFloatv(pname,data):
+        '''
+        void glGetFloatv (GLenum pname, GLfloat *data);
+        '''
+        _glview.glGetFloatv(pname,data)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetFramebufferAttachmentParameteriv'):
+    _glview.glGetFramebufferAttachmentParameteriv.restype = c_void
+    _glview.glGetFramebufferAttachmentParameteriv.argtypes = [c_GLenum,c_GLenum,c_GLenum,POINTER(c_GLint)]
+    def glGetFramebufferAttachmentParameteriv(target,attachment,pname,params):
+        '''
+        void glGetFramebufferAttachmentParameteriv (GLenum target, GLenum attachment, GLenum pname, GLint *params);
+        '''
+        _glview.glGetFramebufferAttachmentParameteriv(target,attachment,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetIntegerv'):
+    _glview.glGetIntegerv.restype = c_void
+    _glview.glGetIntegerv.argtypes = [c_GLenum,POINTER(c_GLint)]
+    def glGetIntegerv(pname,data):
+        '''
+        void glGetIntegerv (GLenum pname, GLint *data);
+        '''
+        _glview.glGetIntegerv(pname,data)
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glGetProgramiv'):
     _glview.glGetProgramiv.restype = c_int
-    _glview.glGetProgramiv.argtypes = [c_uint,c_int,POINTER(c_int)]
+    _glview.glGetProgramiv.argtypes = [c_GLuint,c_GLenum,POINTER(c_GLint)]
     def glGetProgramiv(program,pname):
         '''
+        void glGetProgramiv (GLuint program, GLenum pname, GLint *params);
         '''
         params = c_int(0)
         _glview.glGetProgramiv(program,pname,params)
@@ -424,78 +1008,802 @@ if function_exists(_glview,'glGetProgramiv'):
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glGetProgramInfoLog'):
     _glview.glGetProgramInfoLog.restype = c_void
-    _glview.glGetProgramInfoLog.argtypes = [c_uint,c_int,POINTER(c_int),c_char_p]
+    _glview.glGetProgramInfoLog.argtypes = [c_GLuint,c_GLsizei,POINTER(c_GLsizei),c_GLchar_p]
     def glGetProgramInfoLog(program):
         '''
+        void glGetProgramInfoLog (GLuint program, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
         '''
         bufSize = int(glGetProgramiv(program, GL_INFO_LOG_LENGTH))
         #print("bufSize",bufSize)
         if bufSize > 0:
-            infoLog = ctypes.create_string_buffer(bufSize+1)
+            infoLog = create_string_buffer(bufSize)
             length = c_int(0)
             _glview.glGetProgramInfoLog(program,bufSize,length,infoLog)
             return infoLog.value.decode('utf-8')
         return ''
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glUseProgram'):
-    _glview.glUseProgram.restype = c_void
-    _glview.glUseProgram.argtypes = [c_uint]
-    def glUseProgram(program):
+if function_exists(_glview,'glGetRenderbufferParameteriv'):
+    _glview.glGetRenderbufferParameteriv.restype = c_void
+    _glview.glGetRenderbufferParameteriv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLint)]
+    def glGetRenderbufferParameteriv(target,pname,params):
         '''
+        void glGetRenderbufferParameteriv (GLenum target, GLenum pname, GLint *params);
         '''
-        _glview.glUseProgram(program)
+        _glview.glGetRenderbufferParameteriv(target,pname,params)
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glDeleteProgram'):
-    _glview.glDeleteProgram.restype = c_void
-    _glview.glDeleteProgram.argtypes = [c_uint]
-    def glDeleteProgram(program):
+if function_exists(_glview,'glGetShaderiv'):
+    _glview.glGetShaderiv.restype = c_int
+    _glview.glGetShaderiv.argtypes = [c_GLuint,c_GLenum,POINTER(c_GLint)]
+    def glGetShaderiv(shader,pname):
         '''
+        void glGetShaderiv (GLuint shader, GLenum pname, GLint *params);
         '''
-        _glview.glDeleteProgram(program)
+        params = c_int(0)
+        _glview.glGetShaderiv(shader,pname,params)
+        return params.value
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glBindAttribLocation'):
-    _glview.glBindAttribLocation.restype = c_void
-    _glview.glBindAttribLocation.argtypes = [c_uint,c_uint,c_char_p]
-    def glBindAttribLocation(program,index,name):
+if function_exists(_glview,'glGetShaderInfoLog'):
+    _glview.glGetShaderInfoLog.restype = c_void
+    _glview.glGetShaderInfoLog.argtypes = [c_GLuint,c_GLsizei,POINTER(c_GLsizei),c_GLchar_p]
+    def glGetShaderInfoLog(shader):
         '''
+        void glGetShaderInfoLog (GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
         '''
-        _glview.glBindAttribLocation(program,index,name.encode('utf-8'))
+        bufSize = int(glGetShaderiv(shader, GL_INFO_LOG_LENGTH)) # GL_INFO_LOG_LENGTH:null文字を含む長さ
+        #print("bufSize",bufSize)
+        if bufSize > 0:
+            infoLog = create_string_buffer(bufSize)
+            length = c_int(0)
+            _glview.glGetShaderInfoLog(shader,bufSize,length,infoLog)
+            return infoLog.value.decode('utf-8')
+        return ''
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetShaderPrecisionFormat'):
+    _glview.glGetShaderPrecisionFormat.restype = c_void
+    _glview.glGetShaderPrecisionFormat.argtypes = [c_GLuint,c_GLenum,POINTER(c_GLint),POINTER(c_GLint)]
+    def glGetShaderPrecisionFormat(shadertype,precisiontype):
+        '''
+        void glGetShaderPrecisionFormat (GLenum shadertype, GLenum precisiontype, GLint *range, GLint *precision);
+        '''
+        range = c_GLint(0) * 2
+        precision = c_GLint(0)
+        _glview.glGetShaderPrecisionFormat(shadertype,precisiontype,range,precision)
+        return [range[0].value,range[1].value,precision.value]
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetShaderSource'):
+    _glview.glGetShaderSource.restype = c_void
+    _glview.glGetShaderSource.argtypes = [c_GLuint,c_GLsizei,POINTER(c_GLsizei),c_GLchar_p]
+    def glGetShaderSource(shader):
+        '''
+        void glGetShaderSource (GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *source);
+        '''
+        bufSize = int(glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH)) # GL_SHADER_SOURCE_LENGTH:null文字を含む長さ
+        #print("bufSize",bufSize)
+        if bufSize > 0:
+            source = create_string_buffer(bufSize)
+            length = c_int(0)
+            _glview.glGetShaderSource(shader,bufSize,length,source)
+            return source.value.decode('utf-8')
+        return ''
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetString'):
+    _glview.glGetString.restype = c_char_p
+    _glview.glGetString.argtypes = [c_GLenum]
+    def glGetString(name):
+        '''
+        GLubyte *glGetString (GLenum name);
+        '''
+        return _glview.glGetString(name).decode('utf-8')
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetTexParameterfv'):
+    _glview.glGetTexParameterfv.restype = c_void
+    _glview.glGetTexParameterfv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLfloat)]
+    def glGetTexParameterfv(target,pname,params):
+        '''
+        void glGetTexParameterfv (GLenum target, GLenum pname, GLfloat *params);
+        '''
+        _glview.glGetTexParameterfv(target,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetTexParameteriv'):
+    _glview.glGetTexParameteriv.restype = c_void
+    _glview.glGetTexParameteriv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLint)]
+    def glGetTexParameteriv(target,pname,params):
+        '''
+        void glGetTexParameteriv (GLenum target, GLenum pname, GLint *params);
+        '''
+        _glview.glGetTexParameteriv(target,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetUniformfv'):
+    _glview.glGetUniformfv.restype = c_void
+    _glview.glGetUniformfv.argtypes = [c_GLuint,c_GLint,POINTER(c_GLfloat)]
+    def glGetUniformfv(program,location,params):
+        '''
+        void glGetUniformfv (GLuint program, GLint location, GLfloat *params);
+        '''
+        _glview.glGetUniformfv(program,location,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetUniformiv'):
+    _glview.glGetUniformiv.restype = c_void
+    _glview.glGetUniformiv.argtypes = [c_GLuint,c_GLint,POINTER(c_GLint)]
+    def glGetUniformiv(program,location,params):
+        '''
+        void glGetUniformiv (GLuint program, GLint location, GLint *params);
+        '''
+        _glview.glGetUniformiv(program,location,params)
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glGetUniformLocation'):
-    _glview.glGetUniformLocation.restype = c_int
-    _glview.glGetUniformLocation.argtypes = [c_uint,c_char_p]
+    _glview.glGetUniformLocation.restype = c_GLint
+    _glview.glGetUniformLocation.argtypes = [c_GLuint,c_GLchar_p]
     def glGetUniformLocation(program,name):
         '''
+        GLint glGetUniformLocation (GLuint program, const GLchar *name);
         '''
         return _glview.glGetUniformLocation(program,name.encode('utf-8'))
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glViewport'):
-    _glview.glViewport.restype = c_void
-    _glview.glViewport.argtypes = [c_int,c_int,c_int,c_int]
-    def glViewport(x, y, width, height):
+if function_exists(_glview,'glGetVertexAttribfv'):
+    _glview.glGetVertexAttribfv.restype = c_void
+    _glview.glGetVertexAttribfv.argtypes = [c_GLuint,c_GLenum,POINTER(c_GLfloat)]
+    def glGetVertexAttribfv(index,pname,params):
         '''
-        * @brief		Viewport設定
+        void glGetVertexAttribfv (GLuint index, GLenum pname, GLfloat *params);
         '''
-        _glview.glViewport(x, y, width, height)
+        _glview.glGetVertexAttribfv(index,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetVertexAttribiv'):
+    _glview.glGetVertexAttribiv.restype = c_void
+    _glview.glGetVertexAttribiv.argtypes = [c_GLuint,c_GLenum,POINTER(c_GLint)]
+    def glGetVertexAttribiv(index,pname,params):
+        '''
+        void glGetVertexAttribiv (GLuint index, GLenum pname, GLint *params);
+        '''
+        _glview.glGetVertexAttribiv(index,pname,params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glGetVertexAttribPointerv'):
+    _glview.glGetVertexAttribPointerv.restype = c_void
+    _glview.glGetVertexAttribPointerv.argtypes = [c_GLuint,c_GLenum,POINTER(c_void_p)]
+    def glGetVertexAttribPointerv(index,pname):
+        '''
+        void glGetVertexAttribPointerv (GLuint index, GLenum pname, void **pointer);
+        '''
+        params = c_void_p(0)
+        _glview.glGetVertexAttribPointerv(index,pname,params)
+        return params.value
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glHint'):
+    _glview.glHint.restype = c_void
+    _glview.glHint.argtypes = [c_GLenum,c_GLenum]
+    def glHint(target,mode):
+        '''
+        void glHint (GLenum target, GLenum mode);
+        '''
+        _glview.glHint(target,mode)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsBuffer'):
+    _glview.glIsBuffer.restype = c_GLboolean
+    _glview.glIsBuffer.argtypes = [c_GLuint]
+    def glIsBuffer(buffer):
+        '''
+        GLboolean glIsBuffer (GLuint buffer);
+        '''
+        return _glview.glIsBuffer(buffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsEnabled'):
+    _glview.glIsEnabled.restype = c_GLboolean
+    _glview.glIsEnabled.argtypes = [c_GLenum]
+    def glIsEnabled(cap):
+        '''
+        GLboolean glIsEnabled (GLenum cap);
+        '''
+        return _glview.glIsEnabled(cap)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsFramebuffer'):
+    _glview.glIsFramebuffer.restype = c_GLboolean
+    _glview.glIsFramebuffer.argtypes = [c_GLuint]
+    def glIsFramebuffer(framebuffer):
+        '''
+        GLboolean glIsFramebuffer (GLuint framebuffer);
+        '''
+        return _glview.glIsFramebuffer(framebuffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsProgram'):
+    _glview.glIsProgram.restype = c_GLboolean
+    _glview.glIsProgram.argtypes = [c_GLuint]
+    def glIsProgram(program):
+        '''
+        GLboolean glIsProgram (GLuint program);
+        '''
+        return _glview.glIsProgram(program)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsRenderbuffer'):
+    _glview.glIsRenderbuffer.restype = c_GLboolean
+    _glview.glIsRenderbuffer.argtypes = [c_GLuint]
+    def glIsRenderbuffer(renderbuffer):
+        '''
+        GLboolean glIsRenderbuffer (GLuint renderbuffer);
+        '''
+        return _glview.glIsRenderbuffer(renderbuffer)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsShader'):
+    _glview.glIsShader.restype = c_GLboolean
+    _glview.glIsShader.argtypes = [c_GLuint]
+    def glIsShader(shader):
+        '''
+        GLboolean glIsShader (GLuint shader);
+        '''
+        return _glview.glIsShader(shader)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glIsTexture'):
+    _glview.glIsTexture.restype = c_GLboolean
+    _glview.glIsTexture.argtypes = [c_GLuint]
+    def glIsTexture(texture):
+        '''
+        GLboolean glIsTexture (GLuint texture);
+        '''
+        return _glview.glIsTexture(texture)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glLineWidth'):
+    _glview.glLineWidth.restype = c_void
+    _glview.glLineWidth.argtypes = [c_GLfloat]
+    def glLineWidth(width):
+        '''
+        void  glLineWidth (GLfloat width);
+        '''
+        _glview.glLineWidth(width)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glLinkProgram'):
+    _glview.glLinkProgram.restype = c_void
+    _glview.glLinkProgram.argtypes = [c_GLuint]
+    def glLinkProgram(program):
+        '''
+        void glLinkProgram (GLuint program);
+        '''
+        _glview.glLinkProgram(program)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glPixelStorei'):
+    _glview.glPixelStorei.restype = c_void
+    _glview.glPixelStorei.argtypes = [c_GLenum,c_GLint]
+    def glPixelStorei(pname,param):
+        '''
+        void glPixelStorei (GLenum pname, GLint param);
+        '''
+        _glview.glPixelStorei(pname,param)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glPolygonOffset'):
+    _glview.glPolygonOffset.restype = c_void
+    _glview.glPolygonOffset.argtypes = [c_GLfloat,c_GLfloat]
+    def glPolygonOffset(factor,units):
+        '''
+        void glPolygonOffset (GLfloat factor, GLfloat units);
+        '''
+        _glview.glPolygonOffset(factor,units)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glReadPixels'):
+    _glview.glReadPixels.restype = c_void
+    _glview.glReadPixels.argtypes = [c_GLint, c_GLint, c_GLsizei, c_GLsizei, c_GLenum, c_GLenum, c_void_p]
+    def glReadPixels(x, y, width, height, format, gtype, pixels):
+        '''
+        void glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels);
+        '''
+        if type(pixels) is int:
+            # mallocで確保したメモリのアドレスをc_void_pでリターンするとその変数のtypeがintになる
+            # ので、そのまま、アドレスとして渡すことができる
+            pass
+        elif type(byref(pixels)) is type(byref(c_int())):
+            # mallocで確保したメモリのアドレスを構造体のPOINTER、contentsにキャストして使用していた場合、
+            # アドレスはbyrefで求めることができる
+            # data = cast(glv_malloc(sizeof(GLV_T_POINT_t)),POINTER(GLV_T_POINT_t)).contents
+            pixels = byref(pixels)
+        elif type(pixels) is ndarray:
+            # numpyのarrayの場合、c_void_p型に変換する
+            pixels = pixels.ctypes.data_as(c_void_p)
+        _glview.glReadPixels(x, y, width, height, format, gtype, pixels)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glReleaseShaderCompiler'):
+    _glview.glReleaseShaderCompiler.restype = c_void
+    _glview.glReleaseShaderCompiler.argtypes = c_void
+    def glReleaseShaderCompiler():
+        '''
+        void glReleaseShaderCompiler (void);
+        '''
+        _glview.glReleaseShaderCompiler()
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glRenderbufferStorage'):
+    _glview.glRenderbufferStorage.restype = c_void
+    _glview.glRenderbufferStorage.argtypes = [c_GLenum, c_GLenum, c_GLsizei, c_GLsizei]
+    def glRenderbufferStorage(target, internalformat, width, height):
+        '''
+        void glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+        '''
+        _glview.glRenderbufferStorage(target, internalformat, width, height)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glSampleCoverage'):
+    _glview.glSampleCoverage.restype = c_void
+    _glview.glSampleCoverage.argtypes = [c_GLfloat, c_GLboolean]
+    def glSampleCoverage(value, invert):
+        '''
+        void glSampleCoverage (GLfloat value, GLboolean invert);
+        '''
+        _glview.glSampleCoverage(value, invert)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glScissor'):
+    _glview.glScissor.restype = c_void
+    _glview.glScissor.argtypes = [c_GLint, c_GLint, c_GLsizei, c_GLsizei]
+    def glScissor(x, y, width, height):
+        '''
+        void glScissor (GLint x, GLint y, GLsizei width, GLsizei height);
+        '''
+        _glview.glScissor(x, y, width, height)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glShaderBinary'):
+    _glview.glShaderBinary.restype = c_void
+    _glview.glShaderBinary.argtypes = [c_GLsizei, POINTER(c_GLuint), c_GLenum, c_void_p, c_GLsizei]
+    def glShaderBinary(count, shaders, binaryformat, binary, length):
+        '''
+        void glShaderBinary (GLsizei count, const GLuint *shaders, GLenum binaryformat, const void *binary, GLsizei length);
+        '''
+        _glview.glShaderBinary(count, shaders, binaryformat, binary, length)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glShaderSource'):
+    _glview.glShaderSource.restype = c_void
+    _glview.glShaderSource.argtypes = [c_GLuint,c_GLsizei,POINTER(c_GLchar_p),POINTER(c_GLint)]
+    def glShaderSource(shader, count, string, length):
+        '''
+        void glShaderSource (GLuint shader, GLsizei count, const GLchar *const*string, const GLint *length);
+        # 現状、count=1,length=NULLのみ対応している。
+        '''
+        string = c_char_p(string.encode('utf-8'))
+        _glview.glShaderSource(shader, count, string, length)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilFunc'):
+    _glview.glStencilFunc.restype = c_void
+    _glview.glStencilFunc.argtypes = [c_GLenum, c_GLint, c_GLuint]
+    def glStencilFunc(func, ref, mask):
+        '''
+        void glStencilFunc (GLenum func, GLint ref, GLuint mask);
+        '''
+        _glview.glStencilFunc(func, ref, mask)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilFuncSeparate'):
+    _glview.glStencilFuncSeparate.restype = c_void
+    _glview.glStencilFuncSeparate.argtypes = [c_GLenum, c_GLenum, c_GLint, c_GLuint]
+    def glStencilFuncSeparate(face, func, ref, mask):
+        '''
+        void glStencilFuncSeparate (GLenum face, GLenum func, GLint ref, GLuint mask);
+        '''
+        _glview.glStencilFuncSeparate(face, func, ref, mask)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilMask'):
+    _glview.glStencilMask.restype = c_void
+    _glview.glStencilMask.argtypes = [c_GLuint]
+    def glStencilMask(mask):
+        '''
+        void glStencilMask (GLuint mask);
+        '''
+        _glview.glStencilMask(mask)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilMaskSeparate'):
+    _glview.glStencilMaskSeparate.restype = c_void
+    _glview.glStencilMaskSeparate.argtypes = [c_GLenum, c_GLuint]
+    def glStencilMaskSeparate(face, mask):
+        '''
+        void glStencilMaskSeparate (GLenum face, GLuint mask);
+        '''
+        _glview.glStencilMaskSeparate(face, mask)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilOp'):
+    _glview.glStencilOp.restype = c_void
+    _glview.glStencilOp.argtypes = [c_GLenum, c_GLenum, c_GLenum]
+    def glStencilOp(fail, zfail, zpass):
+        '''
+        void glStencilOp (GLenum fail, GLenum zfail, GLenum zpass);
+        '''
+        _glview.glStencilOp(fail, zfail, zpass)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glStencilOpSeparate'):
+    _glview.glStencilOpSeparate.restype = c_void
+    _glview.glStencilOpSeparate.argtypes = [c_GLenum, c_GLenum, c_GLenum, c_GLenum]
+    def glStencilOpSeparate(face, sfail, dpfail, dppass):
+        '''
+        void glStencilOpSeparate (GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass);
+        '''
+        _glview.glStencilOpSeparate(face, sfail, dpfail, dppass)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexImage2D'):
+    _glview.glTexImage2D.restype = c_void
+    _glview.glTexImage2D.argtypes = [c_GLenum,c_GLint,c_GLint,c_GLsizei,c_GLsizei,c_GLint,c_GLenum,c_GLenum,c_void_p]
+    def glTexImage2D(target, level, internalformat, width, height, border, format, gtype, pixels):
+        '''
+        void glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
+        '''
+        if type(pixels) is ndarray:
+            # numpyのarrayの場合、typeに対応したPOINTER型に変換する
+            # glTexImage2D
+            #   GL_UNSIGNED_BYTE
+            if gtype == GL_UNSIGNED_BYTE:
+                pixels = pixels.ctypes.data_as(POINTER(c_uint8))
+            else:
+                # 不明なtypeの場合、GL_UNSIGNED_SHORTとする
+                pixels = pixels.ctypes.data_as(POINTER(c_uint16))
+        _glview.glTexImage2D(target, level, internalformat, width, height, border, format, gtype, pixels)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexParameterf'):
+    _glview.glTexParameterf.restype = c_void
+    _glview.glTexParameterf.argtypes = [c_GLenum,c_GLenum,c_GLfloat]
+    def glTexParameterf(target, pname, param):
+        '''
+        void glTexParameterf (GLenum target, GLenum pname, GLfloat param);
+        '''
+        _glview.glTexParameterf(target, pname, param)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexParameterfv'):
+    _glview.glTexParameterfv.restype = c_void
+    _glview.glTexParameterfv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLfloat)]
+    def glTexParameterfv(target, pname, params):
+        '''
+        void glTexParameterfv (GLenum target, GLenum pname, const GLfloat *params);
+        '''
+        if type(params) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            params = params.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glTexParameterfv(target, pname, params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexParameteri'):
+    _glview.glTexParameteri.restype = c_void
+    _glview.glTexParameteri.argtypes = [c_GLenum,c_GLenum,c_GLint]
+    def glTexParameteri(target, pname, param):
+        '''
+        void glTexParameteri (GLenum target, GLenum pname, GLint param);
+        '''
+        _glview.glTexParameteri(target, pname, param)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexParameteriv'):
+    _glview.glTexParameteriv.restype = c_void
+    _glview.glTexParameteriv.argtypes = [c_GLenum,c_GLenum,POINTER(c_GLint)]
+    def glTexParameteriv(target, pname, params):
+        '''
+        void glTexParameteriv (GLenum target, GLenum pname, const GLint *params);
+        '''
+        if type(params) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLint)に変換する
+            params = params.ctypes.data_as(POINTER(c_GLint))
+        _glview.glTexParameteriv(target, pname, params)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glTexSubImage2D'):
+    _glview.glTexSubImage2D.restype = c_void
+    _glview.glTexSubImage2D.argtypes = [c_GLenum,c_GLint, c_GLint, c_GLint, c_GLsizei, c_GLsizei, c_GLenum, c_GLenum,c_void_p]
+    def glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, gtype, pixels):
+        '''
+        void glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
+        '''
+        if type(pixels) is ndarray:
+            # numpyのarrayの場合、typeに対応したPOINTER型に変換する
+            # glTexSubImage2D
+            #   GL_UNSIGNED_BYTE,GL_UNSIGNED_SHORT_5_6_5,GL_UNSIGNED_SHORT_4_4_4_4,GL_UNSIGNED_SHORT_5_5_5_1
+            if gtype == GL_UNSIGNED_BYTE:
+                pixels = pixels.ctypes.data_as(POINTER(c_uint8))
+            elif gtype == GL_UNSIGNED_SHORT_5_6_5:
+                pixels = pixels.ctypes.data_as(POINTER(c_uint16))
+            elif gtype == GL_UNSIGNED_SHORT_4_4_4_4:
+                pixels = pixels.ctypes.data_as(POINTER(c_uint16))
+            elif gtype == GL_UNSIGNED_SHORT_5_5_5_1:
+                pixels = pixels.ctypes.data_as(POINTER(c_uint16))
+            else:
+                # 不明なtypeの場合、GL_UNSIGNED_BYTEとする
+                pixels = pixels.ctypes.data_as(POINTER(c_uint8))
+        _glview.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, gtype, pixels)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform1f'):
+    _glview.glUniform1f.restype = c_void
+    _glview.glUniform1f.argtypes = [c_GLint,c_GLfloat]
+    def glUniform1f(location, v0):
+        '''
+        void glUniform1f (GLint location, GLfloat v0);
+        '''
+        _glview.glUniform1f(location, v0)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform1fv'):
+    _glview.glUniform1fv.restype = c_void
+    _glview.glUniform1fv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLfloat)]
+    def glUniform1fv(location, count, value):
+        '''
+        void glUniform1fv (GLint location, GLsizei count, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniform1fv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform1i'):
+    _glview.glUniform1i.restype = c_void
+    _glview.glUniform1i.argtypes = [c_GLint,c_GLint]
+    def glUniform1i(location, v0):
+        '''
+        void glUniform1i (GLint location, GLint v0);
+        '''
+        _glview.glUniform1i(location, v0)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform1iv'):
+    _glview.glUniform1iv.restype = c_void
+    _glview.glUniform1iv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLint)]
+    def glUniform1iv(location, count, value):
+        '''
+        void glUniform1iv (GLint location, GLsizei count, const GLint *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLint)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLint))
+        _glview.glUniform1iv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform2f'):
+    _glview.glUniform2f.restype = c_void
+    _glview.glUniform2f.argtypes = [c_GLint,c_GLfloat,c_GLfloat]
+    def glUniform2f(location, v0, v1):
+        '''
+        void glUniform2f (GLint location, GLfloat v0, GLfloat v1);
+        '''
+        _glview.glUniform2f(location, v0, v1)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform2fv'):
+    _glview.glUniform2fv.restype = c_void
+    _glview.glUniform2fv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLfloat)]
+    def glUniform2fv(location, count, value):
+        '''
+        void glUniform2fv (GLint location, GLsizei count, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniform2fv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform2i'):
+    _glview.glUniform2i.restype = c_void
+    _glview.glUniform2i.argtypes = [c_GLint,c_GLint,c_GLint]
+    def glUniform2i(location, v0, v1):
+        '''
+        void glUniform2i (GLint location, GLint v0, GLint v1);
+        '''
+        _glview.glUniform2i(location, v0, v1)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform2iv'):
+    _glview.glUniform2iv.restype = c_void
+    _glview.glUniform2iv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLint)]
+    def glUniform2iv(location, count, value):
+        '''
+        void glUniform2iv (GLint location, GLsizei count, const GLint *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLint)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLint))
+        _glview.glUniform2iv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform3f'):
+    _glview.glUniform3f.restype = c_void
+    _glview.glUniform3f.argtypes = [c_GLint,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glUniform3f(location, v0, v1, v2):
+        '''
+        void glUniform3f (GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
+        '''
+        _glview.glUniform3f(location, v0, v1, v2)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform3fv'):
+    _glview.glUniform3fv.restype = c_void
+    _glview.glUniform3fv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLfloat)]
+    def glUniform3fv(location, count, value):
+        '''
+        void glUniform3fv (GLint location, GLsizei count, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniform3fv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform3i'):
+    _glview.glUniform3i.restype = c_void
+    _glview.glUniform3i.argtypes = [c_GLint,c_GLint,c_GLint,c_GLint]
+    def glUniform3i(location, v0, v1, v2):
+        '''
+        void glUniform3i (GLint location, GLint v0, GLint v1, GLint v2);
+        '''
+        _glview.glUniform3i(location, v0, v1, v2)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform3iv'):
+    _glview.glUniform3iv.restype = c_void
+    _glview.glUniform3iv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLint)]
+    def glUniform3iv(location, count, value):
+        '''
+        void glUniform3iv (GLint location, GLsizei count, const GLint *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLint)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLint))
+        _glview.glUniform3iv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform4f'):
+    _glview.glUniform4f.restype = c_void
+    _glview.glUniform4f.argtypes = [c_GLint,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glUniform4f(location, v0, v1, v2, v3):
+        '''
+        void glUniform4f (GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+        '''
+        _glview.glUniform4f(location, v0, v1, v2, v3)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform4fv'):
+    _glview.glUniform4fv.restype = c_void
+    _glview.glUniform4fv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLfloat)]
+    def glUniform4fv(location, count, value):
+        '''
+        void glUniform4fv (GLint location, GLsizei count, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniform4fv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform4i'):
+    _glview.glUniform4i.restype = c_void
+    _glview.glUniform4i.argtypes = [c_GLint,c_GLint,c_GLint,c_GLint,c_GLint]
+    def glUniform4i(location, v0, v1, v2, v3):
+        '''
+        void glUniform4i (GLint location, GLint v0, GLint v1, GLint v2, GLint v3);
+        '''
+        _glview.glUniform4i(location, v0, v1, v2, v3)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniform4iv'):
+    _glview.glUniform4iv.restype = c_void
+    _glview.glUniform4iv.argtypes = [c_GLint,c_GLsizei,POINTER(c_GLint)]
+    def glUniform4iv(location, count, value):
+        '''
+        void glUniform4iv (GLint location, GLsizei count, const GLint *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLint)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLint))
+        _glview.glUniform4iv(location, count, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniformMatrix2fv'):
+    _glview.glUniformMatrix2fv.restype = c_void
+    _glview.glUniformMatrix2fv.argtypes = [c_GLint,c_GLsizei,c_GLboolean,POINTER(c_GLfloat)]
+    def glUniformMatrix2fv(location, count, transpose, value):
+        '''
+        void glUniformMatrix2fv (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniformMatrix2fv(location, count, transpose, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUniformMatrix3fv'):
+    _glview.glUniformMatrix3fv.restype = c_void
+    _glview.glUniformMatrix3fv.argtypes = [c_GLint,c_GLsizei,c_GLboolean,POINTER(c_GLfloat)]
+    def glUniformMatrix3fv(location, count, transpose, value):
+        '''
+        void glUniformMatrix3fv (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+        '''
+        if type(value) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glUniformMatrix3fv(location, count, transpose, value)
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glUniformMatrix4fv'):
     _glview.glUniformMatrix4fv.restype = c_void
-    _glview.glUniformMatrix4fv.argtypes = [c_int,c_int,c_int,POINTER(c_float)]
+    _glview.glUniformMatrix4fv.argtypes = [c_GLint,c_GLsizei,c_GLboolean,POINTER(c_GLfloat)]
     def glUniformMatrix4fv(location, count, transpose, value):
         '''
-        * @brief		Viewport設定
+        void glUniformMatrix4fv (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
         '''
         if type(value) is ndarray:
-            # numpyのarrayの場合、POINTER(c_float)に変換する
-            value = value.ctypes.data_as(POINTER(c_float))
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            value = value.ctypes.data_as(POINTER(c_GLfloat))
         _glview.glUniformMatrix4fv(location, count, transpose, value)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glUseProgram'):
+    _glview.glUseProgram.restype = c_void
+    _glview.glUseProgram.argtypes = [c_GLuint]
+    def glUseProgram(program):
+        '''
+        void glUseProgram (GLuint program);
+        '''
+        _glview.glUseProgram(program)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glValidateProgram'):
+    _glview.glValidateProgram.restype = c_void
+    _glview.glValidateProgram.argtypes = [c_GLuint]
+    def glValidateProgram(program):
+        '''
+        void glValidateProgram (GLuint program);
+        '''
+        _glview.glValidateProgram(program)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib1f'):
+    _glview.glVertexAttrib1f.restype = c_void
+    _glview.glVertexAttrib1f.argtypes = [c_GLuint,c_GLfloat]
+    def glVertexAttrib1f(index, x):
+        '''
+        void glVertexAttrib1f (GLuint index, GLfloat x);
+        '''
+        _glview.glVertexAttrib1f(index, x)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib1fv'):
+    _glview.glVertexAttrib1fv.restype = c_void
+    _glview.glVertexAttrib1fv.argtypes = [c_GLuint,POINTER(c_GLfloat)]
+    def glVertexAttrib1fv(index, v):
+        '''
+        void glVertexAttrib1fv (GLuint index, const GLfloat *v);
+        '''
+        if type(v) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            v = v.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glVertexAttrib1fv(index, v)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib2f'):
+    _glview.glVertexAttrib2f.restype = c_void
+    _glview.glVertexAttrib2f.argtypes = [c_GLuint,c_GLfloat,c_GLfloat]
+    def glVertexAttrib2f(index, x, y):
+        '''
+        void glVertexAttrib2f (GLuint index, GLfloat x, GLfloat y);
+        '''
+        _glview.glVertexAttrib2f(index, x, y)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib2fv'):
+    _glview.glVertexAttrib2fv.restype = c_void
+    _glview.glVertexAttrib2fv.argtypes = [c_GLuint,POINTER(c_GLfloat)]
+    def glVertexAttrib2fv(index, v):
+        '''
+        void glVertexAttrib2fv (GLuint index, const GLfloat *v);
+        '''
+        if type(v) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            v = v.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glVertexAttrib2fv(index, v)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib3f'):
+    _glview.glVertexAttrib3f.restype = c_void
+    _glview.glVertexAttrib3f.argtypes = [c_GLuint,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glVertexAttrib3f(index, x, y, z):
+        '''
+        void glVertexAttrib3f (GLuint index, GLfloat x, GLfloat y, GLfloat z);
+        '''
+        _glview.glVertexAttrib3f(index, x, y, z)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib3fv'):
+    _glview.glVertexAttrib3fv.restype = c_void
+    _glview.glVertexAttrib3fv.argtypes = [c_GLuint,POINTER(c_GLfloat)]
+    def glVertexAttrib3fv(index, v):
+        '''
+        void glVertexAttrib3fv (GLuint index, const GLfloat *v);
+        '''
+        if type(v) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            v = v.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glVertexAttrib3fv(index, v)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib4f'):
+    _glview.glVertexAttrib4f.restype = c_void
+    _glview.glVertexAttrib4f.argtypes = [c_GLuint,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+    def glVertexAttrib4f(index, x, y, z, w):
+        '''
+        void glVertexAttrib4f (GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+        '''
+        _glview.glVertexAttrib4f(index, x, y, z, w)
+# ------------------------------------------------------------------------------
+if function_exists(_glview,'glVertexAttrib4fv'):
+    _glview.glVertexAttrib4fv.restype = c_void
+    _glview.glVertexAttrib4fv.argtypes = [c_GLuint,POINTER(c_GLfloat)]
+    def glVertexAttrib4fv(index, v):
+        '''
+        void glVertexAttrib4fv (GLuint index, const GLfloat *v);
+        '''
+        if type(v) is ndarray:
+            # numpyのarrayの場合、POINTER(c_GLfloat)に変換する
+            v = v.ctypes.data_as(POINTER(c_GLfloat))
+        _glview.glVertexAttrib3fv(index, v)
 # ------------------------------------------------------------------------------
 if function_exists(_glview,'glVertexAttribPointer'):
     _glview.glVertexAttribPointer.restype = c_void
-    _glview.glVertexAttribPointer.argtypes = [c_uint,c_int,c_int,c_int,c_int,c_void_p]
+    _glview.glVertexAttribPointer.argtypes = [c_GLuint,c_GLint,c_GLenum,c_GLboolean,c_GLsizei,c_void_p]
     def glVertexAttribPointer(index, size, gtype, normalized, stride, pointer):
         '''
-        * @brief		Viewport設定
+        void glVertexAttribPointer (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer);
         '''
         if type(pointer) is ndarray:
             # numpyのarrayの場合、typeに対応したPOINTER型に変換する
@@ -524,264 +1832,12 @@ if function_exists(_glview,'glVertexAttribPointer'):
                 pointer = pointer.ctypes.data_as(POINTER(c_float))
         _glview.glVertexAttribPointer(index, size, gtype, normalized, stride, pointer)
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glEnableVertexAttribArray'):
-    _glview.glEnableVertexAttribArray.restype = c_void
-    _glview.glEnableVertexAttribArray.argtypes = [c_uint]
-    def glEnableVertexAttribArray(index):
+if function_exists(_glview,'glViewport'):
+    _glview.glViewport.restype = c_void
+    _glview.glViewport.argtypes = [c_GLint,c_GLint,c_GLsizei,c_GLsizei]
+    def glViewport(x, y, width, height):
         '''
+        void glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
         '''
-        _glview.glEnableVertexAttribArray(index)
+        _glview.glViewport(x, y, width, height)
 # ------------------------------------------------------------------------------
-if function_exists(_glview,'glDisableVertexAttribArray'):
-    _glview.glDisableVertexAttribArray.restype = c_void
-    _glview.glDisableVertexAttribArray.argtypes = [c_uint]
-    def glDisableVertexAttribArray(index):
-        '''
-        '''
-        _glview.glDisableVertexAttribArray(index)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glDrawArrays'):
-    _glview.glDrawArrays.restype = c_void
-    _glview.glDrawArrays.argtypes = [c_int,c_int,c_int]
-    def glDrawArrays(mode, first, count):
-        '''
-        '''
-        _glview.glDrawArrays(mode, first, count)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glEnable'):
-    _glview.glEnable.restype = c_void
-    _glview.glEnable.argtypes = [c_int]
-    def glEnable(cap):
-        '''
-        '''
-        _glview.glEnable(cap)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glDisable'):
-    _glview.glDisable.restype = c_void
-    _glview.glDisable.argtypes = [c_int]
-    def glDisable(cap):
-        '''
-        '''
-        _glview.glDisable(cap)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glBlendFunc'):
-    _glview.glBlendFunc.restype = c_void
-    _glview.glBlendFunc.argtypes = [c_int,c_int]
-    def glBlendFunc(sfactor, dfactor):
-        '''
-        '''
-        _glview.glBlendFunc(sfactor, dfactor)
-# ------------------------------------------------------------------------------
-if function_exists(_glview,'glFlush'):
-    _glview.glFlush.restype = c_void
-    _glview.glFlush.argtypes = c_void
-    def glFlush():
-        '''
-        '''
-        _glview.glFlush()
-# ------------------------------------------------------------------------------
-"""
-if function_exists(_es1emu,'glEnableClientState'):
-    _es1emu.glEnableClientState.restype = c_void
-    _es1emu.glEnableClientState.argtypes = [c_uint]
-    def glEnableClientState(array):
-        _es1emu.glEnableClientState(array)
-
-if function_exists(_es1emu,'glDisableClientState'):
-    _es1emu.glDisableClientState.restype = c_void
-    _es1emu.glDisableClientState.argtypes = [c_uint]
-    def glDisableClientState(array):
-        _es1emu.glDisableClientState(array)
-
-if function_exists(_es1emu,'glColor4f'):
-    _es1emu.glColor4f.restype = c_void
-    _es1emu.glColor4f.argtypes = [c_float,c_float,c_float,c_float]
-    def glColor4f(red,green,blue,alpha):
-        _es1emu.glColor4f(red,green,blue,alpha)
-
-if function_exists(_es1emu,'glPopMatrix'):
-    _es1emu.glPopMatrix.restype = c_void
-    _es1emu.glPopMatrix.argtypes = c_void
-    def glPopMatrix():
-        _es1emu.glPopMatrix()
-
-if function_exists(_es1emu,'glPushMatrix'):
-    _es1emu.glPushMatrix.restype = c_void
-    _es1emu.glPushMatrix.argtypes = c_void
-    def glPushMatrix():
-        _es1emu.glPushMatrix()
-
-if function_exists(_es1emu,'glMatrixMode'):
-    _es1emu.glMatrixMode.restype = c_void
-    _es1emu.glMatrixMode.argtypes = [c_uint]
-    def glMatrixMode(mode):
-        _es1emu.glMatrixMode(mode)
-
-if function_exists(_es1emu,'glLoadIdentity'):
-    _es1emu.glLoadIdentity.restype = c_void
-    _es1emu.glLoadIdentity.argtypes = c_void
-    def glLoadIdentity():
-        _es1emu.glLoadIdentity()
-
-if function_exists(_es1emu,'glOrthof'):
-    _es1emu.glOrthof.restype = c_void
-    _es1emu.glOrthof.argtypes = [c_float,c_float,c_float,c_float,c_float,c_float]
-    def glOrthof(left,right,bottom,top,zNear,zFar):
-        _es1emu.glOrthof(left,right,bottom,top,zNear,zFar)
-
-if function_exists(_es1emu,'glRotatef'):
-    _es1emu.glRotatef.restype = c_void
-    _es1emu.glRotatef.argtypes = [c_float,c_float,c_float,c_float]
-    def glRotatef(angle, x, y, z):
-        _es1emu.glRotatef(angle, x, y, z)
-
-if function_exists(_es1emu,'glScalef'):
-    _es1emu.glScalef.restype = c_void
-    _es1emu.glScalef.argtypes = [c_float,c_float,c_float]
-    def glScalef(x, y, z):
-        _es1emu.glScalef(x, y, z)
-
-if function_exists(_es1emu,'glTranslatef'):
-    _es1emu.glTranslatef.restype = c_void
-    _es1emu.glTranslatef.argtypes = [c_float,c_float,c_float]
-    def glTranslatef(x, y, z):
-        _es1emu.glTranslatef(x, y, z)
-
-if function_exists(_es1emu,'glVertexPointer'):
-    _es1emu.glVertexPointer.restype = c_void
-    _es1emu.glVertexPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
-    def glVertexPointer(size,type,stride,pointer):
-        _es1emu.glVertexPointer(size,type,stride,pointer)
-
-if function_exists(_es1emu,'glColorPointer'):
-    _es1emu.glColorPointer.restype = c_void
-    _es1emu.glColorPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
-    def glColorPointer(size,type,stride,pointer):
-        _es1emu.glColorPointer(size,type,stride,pointer)
-
-if function_exists(_es1emu,'glTexCoordPointer'):
-    _es1emu.glTexCoordPointer.restype = c_void
-    _es1emu.glTexCoordPointer.argtypes = [c_int,c_uint,c_int,c_void_p]
-    def glTexCoordPointer(size,type,stride,pointer):
-        _es1emu.glTexCoordPointer(size,type,stride,pointer)
-"""
-
-'''
- void  glActiveTexture (GLenum texture);
- void  glBindBuffer (GLenum target, GLuint buffer);
- void  glBindFramebuffer (GLenum target, GLuint framebuffer);
- void  glBindRenderbuffer (GLenum target, GLuint renderbuffer);
- void  glBindTexture (GLenum target, GLuint texture);
- void  glBlendColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
- void  glBlendEquation (GLenum mode);
- void  glBlendEquationSeparate (GLenum modeRGB, GLenum modeAlpha);
- void  glBlendFuncSeparate (GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
- void  glBufferData (GLenum target, GLsizeiptr size, const void *data, GLenum usage);
- void  glBufferSubData (GLenum target, GLintptr offset, GLsizeiptr size, const void *data);
- GLenum  glCheckFramebufferStatus (GLenum target);
- void  glClearDepthf (GLfloat d);
- void  glClearStencil (GLint s);
- void  glColorMask (GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
- void  glCompressedTexImage2D (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data);
- void  glCompressedTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data);
- void  glCopyTexImage2D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
- void  glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
- void  glCullFace (GLenum mode);
- void  glDeleteBuffers (GLsizei n, const GLuint *buffers);
- void  glDeleteFramebuffers (GLsizei n, const GLuint *framebuffers);
- void  glDeleteProgram (GLuint program);
- void  glDeleteRenderbuffers (GLsizei n, const GLuint *renderbuffers);
- void  glDeleteShader (GLuint shader);
- void  glDeleteTextures (GLsizei n, const GLuint *textures);
- void  glDepthFunc (GLenum func);
- void  glDepthMask (GLboolean flag);
- void  glDepthRangef (GLfloat n, GLfloat f);
- void  glDetachShader (GLuint program, GLuint shader);
- void  glDrawElements (GLenum mode, GLsizei count, GLenum type, const void *indices);
- void  glFinish (void);
- void  glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
- void  glFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
- void  glFrontFace (GLenum mode);
- void  glGenBuffers (GLsizei n, GLuint *buffers);
- void  glGenerateMipmap (GLenum target);
- void  glGenFramebuffers (GLsizei n, GLuint *framebuffers);
- void  glGenRenderbuffers (GLsizei n, GLuint *renderbuffers);
- void  glGenTextures (GLsizei n, GLuint *textures);
- void  glGetActiveAttrib (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
- void  glGetActiveUniform (GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name);
- void  glGetAttachedShaders (GLuint program, GLsizei maxCount, GLsizei *count, GLuint *shaders);
- GLint  glGetAttribLocation (GLuint program, const GLchar *name);
- void  glGetBooleanv (GLenum pname, GLboolean *data);
- void  glGetBufferParameteriv (GLenum target, GLenum pname, GLint *params);
- GLenum  glGetError (void);
- void  glGetFloatv (GLenum pname, GLfloat *data);
- void  glGetFramebufferAttachmentParameteriv (GLenum target, GLenum attachment, GLenum pname, GLint *params);
- void  glGetIntegerv (GLenum pname, GLint *data);
- void  glGetRenderbufferParameteriv (GLenum target, GLenum pname, GLint *params);
- void  glGetShaderPrecisionFormat (GLenum shadertype, GLenum precisiontype, GLint *range, GLint *precision);
- void  glGetShaderSource (GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *source);
- const GLubyte * glGetString (GLenum name);
- void  glGetTexParameterfv (GLenum target, GLenum pname, GLfloat *params);
- void  glGetTexParameteriv (GLenum target, GLenum pname, GLint *params);
- void  glGetUniformfv (GLuint program, GLint location, GLfloat *params);
- void  glGetUniformiv (GLuint program, GLint location, GLint *params);
- void  glGetVertexAttribfv (GLuint index, GLenum pname, GLfloat *params);
- void  glGetVertexAttribiv (GLuint index, GLenum pname, GLint *params);
- void  glGetVertexAttribPointerv (GLuint index, GLenum pname, void **pointer);
- void  glHint (GLenum target, GLenum mode);
- GLboolean  glIsBuffer (GLuint buffer);
- GLboolean  glIsEnabled (GLenum cap);
- GLboolean  glIsFramebuffer (GLuint framebuffer);
- GLboolean  glIsProgram (GLuint program);
- GLboolean  glIsRenderbuffer (GLuint renderbuffer);
- GLboolean  glIsShader (GLuint shader);
- GLboolean  glIsTexture (GLuint texture);
- void  glLineWidth (GLfloat width);
- void  glPixelStorei (GLenum pname, GLint param);
- void  glPolygonOffset (GLfloat factor, GLfloat units);
- void  glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void *pixels);
- void  glReleaseShaderCompiler (void);
- void  glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
- void  glSampleCoverage (GLfloat value, GLboolean invert);
- void  glScissor (GLint x, GLint y, GLsizei width, GLsizei height);
- void  glShaderBinary (GLsizei count, const GLuint *shaders, GLenum binaryformat, const void *binary, GLsizei length);
- void  glStencilFunc (GLenum func, GLint ref, GLuint mask);
- void  glStencilFuncSeparate (GLenum face, GLenum func, GLint ref, GLuint mask);
- void  glStencilMask (GLuint mask);
- void  glStencilMaskSeparate (GLenum face, GLuint mask);
- void  glStencilOp (GLenum fail, GLenum zfail, GLenum zpass);
- void  glStencilOpSeparate (GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass);
- void  glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
- void  glTexParameterf (GLenum target, GLenum pname, GLfloat param);
- void  glTexParameterfv (GLenum target, GLenum pname, const GLfloat *params);
- void  glTexParameteri (GLenum target, GLenum pname, GLint param);
- void  glTexParameteriv (GLenum target, GLenum pname, const GLint *params);
- void  glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
- void  glUniform1f (GLint location, GLfloat v0);
- void  glUniform1fv (GLint location, GLsizei count, const GLfloat *value);
- void  glUniform1i (GLint location, GLint v0);
- void  glUniform1iv (GLint location, GLsizei count, const GLint *value);
- void  glUniform2f (GLint location, GLfloat v0, GLfloat v1);
- void  glUniform2fv (GLint location, GLsizei count, const GLfloat *value);
- void  glUniform2i (GLint location, GLint v0, GLint v1);
- void  glUniform2iv (GLint location, GLsizei count, const GLint *value);
- void  glUniform3f (GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
- void  glUniform3fv (GLint location, GLsizei count, const GLfloat *value);
- void  glUniform3i (GLint location, GLint v0, GLint v1, GLint v2);
- void  glUniform3iv (GLint location, GLsizei count, const GLint *value);
- void  glUniform4f (GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
- void  glUniform4fv (GLint location, GLsizei count, const GLfloat *value);
- void  glUniform4i (GLint location, GLint v0, GLint v1, GLint v2, GLint v3);
- void  glUniform4iv (GLint location, GLsizei count, const GLint *value);
- void  glUniformMatrix2fv (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
- void  glUniformMatrix3fv (GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
- void  glValidateProgram (GLuint program);
- void  glVertexAttrib1f (GLuint index, GLfloat x);
- void  glVertexAttrib1fv (GLuint index, const GLfloat *v);
- void  glVertexAttrib2f (GLuint index, GLfloat x, GLfloat y);
- void  glVertexAttrib2fv (GLuint index, const GLfloat *v);
- void  glVertexAttrib3f (GLuint index, GLfloat x, GLfloat y, GLfloat z);
- void  glVertexAttrib3fv (GLuint index, const GLfloat *v);
- void  glVertexAttrib4f (GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
- void  glVertexAttrib4fv (GLuint index, const GLfloat *v);
- '''
