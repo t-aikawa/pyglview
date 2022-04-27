@@ -5,8 +5,11 @@
 ## 動作確認環境
 
 ubuntu 21.10,Python 3.9.7
+ubuntu 22.04,Python 3.10.4
 
-pyopenglでは動作がおかしいので、glview経由でlibgles2を呼び出しています。
+openglの実装は、glviewのシェアードライブラリ経由でlibgles2を呼び出しています。
+（pyopenglは、使用せず、独自に実装しています。）
+現時点では、テストプログラムで必要なAPIのみ動作確認しています。
 
 ## ビルド＆動作手順
 
@@ -30,9 +33,11 @@ sudo apt-get install meson
 
 git clone https://github.com/t-aikawa/glview.git
 cd glview
+chmod +x m mm simple-egl smoke test s001 s002
 ./m
 
 ---------------------------------------------------------------------
+pip3 install numpy
 
 cd ../
 git clone https://github.com/t-aikawa/pyglview.git
