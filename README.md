@@ -42,14 +42,20 @@ pip3 install numpy
 cd ../
 git clone https://github.com/t-aikawa/pyglview.git
 cd pyglview
-
-python3 xxxx.py
 ```
 
 ## サンプルアプリ
 
-- xxxx_basic.py : C言語のAPIを直接呼び出した例
-- xxxx_class.py : クラスライブラリを経由して、呼び出した例
+```
+txxx_basic.py       # C言語のAPIを呼び出した例
+txxx_class.py       # クラスライブラリを経由して、呼び出した例
+
+pip3 install opencv-contrib-python
+opencv_video.py xxx.mp4     # opencvでmp4を再生
+
+pip3 install matplotlib
+matplotlib_sample.py        # matplotlibを使用した例
+```
 
 ## 問い合わせ等は、以下のメールアドレスまで
 
