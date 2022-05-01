@@ -62,3 +62,16 @@ matplotlib_sample.py        # matplotlibを使用した例
 ```
 aikawat@jcom.home.ne.jp
 ```
+
+## サンプルアプリ(スクリーンショット)
+
+### egl_class.py
+<img width="300" alt="s001" src="./docs/Screenshot_egl_class.png">
+
+### t003_class.py
+<img width="300" alt="smoke" src="./docs/Screenshot_t003_class.png">
+
+### matplotlib_sample.py
+<img width="300" alt="simple-egl" src="./docs/Screenshot_matplotlib_sample.png">
+
+ - マウスの左クリックで動かすと、視点を変更できます。
