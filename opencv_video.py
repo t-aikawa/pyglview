@@ -96,8 +96,8 @@ class   app_window(glv_class_window):
 
         size = 20
         glvFont_SetStyle(GLV_FONT_NAME_NORMAL,size,0.0,0,GLV_FONT_NAME | GLV_FONT_NOMAL | GLV_FONT_SIZE | GLV_FONT_LEFT)
-        glvFont_setColorRGBA(255,  0, 0,255)
-        glvFont_SetBkgdColorRGBA(255,255,255,0)
+        glvFont_setColor4i(255,  0, 0,255)
+        glvFont_SetBkgdColor4i(255,255,255,0)
         glvFont_SetPosition(0,0)
         
         glvFont_printf(" play time: {}\n",self.play_time / 1000.0)

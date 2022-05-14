@@ -8,7 +8,7 @@ from .library import (
     glv_linking_value
 )
 # ------------------------------------------------------------------------------
-# es1emu/es1emu_emulation.h
+# glview/glview.h
 GLV_TYPE_THREAD_FRAME = glv_linking_value('GLV_TYPE_THREAD_FRAME')
 GLV_TYPE_THREAD_WINDOW = glv_linking_value('GLV_TYPE_THREAD_WINDOW')
 GLV_TYPE_CHILD_WINDOW = glv_linking_value('GLV_TYPE_CHILD_WINDOW')
@@ -693,7 +693,7 @@ class glv_wiget_listener(c_Structure):
         super().__setattr__(name, value)
 
 # ------------------------------------------------------------------------------
-# es1emu/es1emu_emulation.h
+# glview/glview.h
 GLV_R_VALUE_IO_SET = glv_linking_value('GLV_R_VALUE_IO_SET')
 GLV_R_VALUE_IO_GET = glv_linking_value('GLV_R_VALUE_IO_GET')
 
@@ -767,7 +767,7 @@ if (0):
 
 # ------------------------------------------------------------------------------
 # #####################################################################################################
-# /usr/include/xkbcommon/xkbcommon-keysyms.h
+# xkbcommon/xkbcommon-keysyms.h
 #
 # TTY function keys, cleverly chosen to map to ASCII, for convenience of
 # programming, but could have been arbitrary (at the cost of lookup

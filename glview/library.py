@@ -21,12 +21,12 @@ def _load_shared_library(library_name):
         '/usr/local/lib',
         '/usr/lib/x86_64-linux-gnu/',
         # for debug
-        '../glview019/builddir/glview',
-        '../glview019/builddir/es1emu',
-        '../glview019/builddir/pthread',
+        '../glview022/builddir/glview',
+        #'../glview021/builddir/es1emu',
+        #'../glview021/builddir/pthread',
         '../glview/builddir/glview',
-        '../glview/builddir/es1emu',
-        '../glview/builddir/pthread',
+        #'../glview/builddir/es1emu',
+        #'../glview/builddir/pthread',
     ]
 
     path_environment_variable = 'LD_LIBRARY_PATH'
@@ -42,17 +42,17 @@ def _load_shared_library(library_name):
     return None
 
 glview  = _load_shared_library('libglview.so')
-es1emu  = _load_shared_library('libes1emu.so')
-pthread = _load_shared_library('libpthread_tool.so')
+#es1emu  = _load_shared_library('libes1emu.so')
+#pthread = _load_shared_library('libpthread_tool.so')
 
 function_exists = hasattr
 
 if glview is None:
     raise ImportError("Failed to load GLVIEW(glview) shared library.")
-if es1emu is None:
-    raise ImportError("Failed to load GLVIEW(es1emu) shared library.")
-if pthread is None:
-    raise ImportError("Failed to load GLVIEW(pthread) shared library.")
+#if es1emu is None:
+#    raise ImportError("Failed to load GLVIEW(es1emu) shared library.")
+#if pthread is None:
+#    raise ImportError("Failed to load GLVIEW(pthread) shared library.")
 
 # ------------------------------------------------------------------------------
 '''

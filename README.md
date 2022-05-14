@@ -1,15 +1,19 @@
-# pyglview
+# pyglview version 0.0.3
 
 ## Use glview with python3
 
+glviewをPython3から利用できます。
+
 ## 動作確認環境
 
-ubuntu 21.10,Python 3.9.7
-ubuntu 22.04,Python 3.10.4
+- ubuntu 21.10,Python 3.9.7
+- ubuntu 22.04,Python 3.10.4
+- glview: version 0.1.18 or later
 
-openglの実装は、glviewのシェアードライブラリ経由でlibgles2を呼び出しています。
-（pyopenglは、使用せず、独自に実装しています。）
-現時点では、テストプログラムで必要なAPIのみ動作確認しています。
+- glviewのシェアードライブラリ経由でlibgles2又はlibOpenGLを呼び出します。
+glviewは、libgles2を使用する場合、OpenGL/ES1.1のいくつかのAPIをエミュレーションします。  
+（pyopenglは、使用せず、独自に実装しています。）  
+現時点では、テストプログラムで必要なOpenGL/ES 2.0APIのみ動作確認しています。
 
 ## ビルド＆動作手順
 
@@ -34,7 +38,10 @@ sudo apt-get install meson
 git clone https://github.com/t-aikawa/glview.git
 cd glview
 chmod +x m mm simple-egl smoke test s001 s002
+# コンパイル
 ./m
+# ./m 又は ./m gles で、OpenGL/ES(libGLESv2.so)とリンクします。
+# ./m opengl で、OpenGL(libOpenGL.so)とリンクします。
 
 ---------------------------------------------------------------------
 pip3 install numpy

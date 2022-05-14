@@ -11,7 +11,7 @@ from .std_type_h import *
 from .opengles2 import *
 
 from .library import (
-    es1emu as _es1emu,
+    glview as _glview,
     function_exists,
     glv_linking_value
 )
@@ -24,108 +24,108 @@ GL_NORMAL_ARRAY = glv_linking_value('GL_NORMAL_ARRAY')
 GL_COLOR_ARRAY = glv_linking_value('GL_COLOR_ARRAY')
 GL_TEXTURE_COORD_ARRAY = glv_linking_value('GL_TEXTURE_COORD_ARRAY')
 
-if function_exists(_es1emu,'glEnableClientState'):
-    _es1emu.glEnableClientState.restype = c_void
-    _es1emu.glEnableClientState.argtypes = [c_GLenum]
+if function_exists(_glview,'glEnableClientState'):
+    _glview.glEnableClientState.restype = c_void
+    _glview.glEnableClientState.argtypes = [c_GLenum]
     def glEnableClientState(array):
         '''
         void glEnableClientState (GLenum array);
         '''
-        _es1emu.glEnableClientState(array)
+        _glview.glEnableClientState(array)
 
-if function_exists(_es1emu,'glDisableClientState'):
-    _es1emu.glDisableClientState.restype = c_void
-    _es1emu.glDisableClientState.argtypes = [c_GLenum]
+if function_exists(_glview,'glDisableClientState'):
+    _glview.glDisableClientState.restype = c_void
+    _glview.glDisableClientState.argtypes = [c_GLenum]
     def glDisableClientState(array):
         '''
         void glDisableClientState (GLenum array);
         '''
-        _es1emu.glDisableClientState(array)
+        _glview.glDisableClientState(array)
 
-if function_exists(_es1emu,'glColor4f'):
-    _es1emu.glColor4f.restype = c_void
-    _es1emu.glColor4f.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+if function_exists(_glview,'glColor4f'):
+    _glview.glColor4f.restype = c_void
+    _glview.glColor4f.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
     def glColor4f(red,green,blue,alpha):
         '''
         void glColor4f(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
         '''
-        _es1emu.glColor4f(red,green,blue,alpha)
+        _glview.glColor4f(red,green,blue,alpha)
 
-if function_exists(_es1emu,'glPopMatrix'):
-    _es1emu.glPopMatrix.restype = c_void
-    _es1emu.glPopMatrix.argtypes = c_void
+if function_exists(_glview,'glPopMatrix'):
+    _glview.glPopMatrix.restype = c_void
+    _glview.glPopMatrix.argtypes = c_void
     def glPopMatrix():
         '''
         void glPopMatrix(void);
         '''
-        _es1emu.glPopMatrix()
+        _glview.glPopMatrix()
 
-if function_exists(_es1emu,'glPushMatrix'):
-    _es1emu.glPushMatrix.restype = c_void
-    _es1emu.glPushMatrix.argtypes = c_void
+if function_exists(_glview,'glPushMatrix'):
+    _glview.glPushMatrix.restype = c_void
+    _glview.glPushMatrix.argtypes = c_void
     def glPushMatrix():
         '''
         void glPushMatrix(void);
         '''
-        _es1emu.glPushMatrix()
+        _glview.glPushMatrix()
 
-if function_exists(_es1emu,'glMatrixMode'):
-    _es1emu.glMatrixMode.restype = c_void
-    _es1emu.glMatrixMode.argtypes = [c_GLenum]
+if function_exists(_glview,'glMatrixMode'):
+    _glview.glMatrixMode.restype = c_void
+    _glview.glMatrixMode.argtypes = [c_GLenum]
     def glMatrixMode(mode):
         '''
         void glMatrixMode(GLenum mode);
         '''
-        _es1emu.glMatrixMode(mode)
+        _glview.glMatrixMode(mode)
 
-if function_exists(_es1emu,'glLoadIdentity'):
-    _es1emu.glLoadIdentity.restype = c_void
-    _es1emu.glLoadIdentity.argtypes = c_void
+if function_exists(_glview,'glLoadIdentity'):
+    _glview.glLoadIdentity.restype = c_void
+    _glview.glLoadIdentity.argtypes = c_void
     def glLoadIdentity():
         '''
         void glLoadIdentity(void);
         '''
-        _es1emu.glLoadIdentity()
+        _glview.glLoadIdentity()
 
-if function_exists(_es1emu,'glOrthof'):
-    _es1emu.glOrthof.restype = c_void
-    _es1emu.glOrthof.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+if function_exists(_glview,'glOrthof'):
+    _glview.glOrthof.restype = c_void
+    _glview.glOrthof.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
     def glOrthof(left,right,bottom,top,zNear,zFar):
         '''
         void glOrthof(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat zNear, GLfloat zFar)
         '''
-        _es1emu.glOrthof(left,right,bottom,top,zNear,zFar)
+        _glview.glOrthof(left,right,bottom,top,zNear,zFar)
 
-if function_exists(_es1emu,'glRotatef'):
-    _es1emu.glRotatef.restype = c_void
-    _es1emu.glRotatef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
+if function_exists(_glview,'glRotatef'):
+    _glview.glRotatef.restype = c_void
+    _glview.glRotatef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat,c_GLfloat]
     def glRotatef(angle, x, y, z):
         '''
         void glRotatef (GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
         '''
-        _es1emu.glRotatef(angle, x, y, z)
+        _glview.glRotatef(angle, x, y, z)
 
-if function_exists(_es1emu,'glScalef'):
-    _es1emu.glScalef.restype = c_void
-    _es1emu.glScalef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat]
+if function_exists(_glview,'glScalef'):
+    _glview.glScalef.restype = c_void
+    _glview.glScalef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat]
     def glScalef(x, y, z):
         '''
         void glScalef (GLfloat x, GLfloat y, GLfloat z);
         '''
-        _es1emu.glScalef(x, y, z)
+        _glview.glScalef(x, y, z)
 
-if function_exists(_es1emu,'glTranslatef'):
-    _es1emu.glTranslatef.restype = c_void
-    _es1emu.glTranslatef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat]
+if function_exists(_glview,'glTranslatef'):
+    _glview.glTranslatef.restype = c_void
+    _glview.glTranslatef.argtypes = [c_GLfloat,c_GLfloat,c_GLfloat]
     def glTranslatef(x, y, z):
         '''
         void glTranslatef (GLfloat x, GLfloat y, GLfloat z);
         '''
-        _es1emu.glTranslatef(x, y, z)
+        _glview.glTranslatef(x, y, z)
 
-if function_exists(_es1emu,'glVertexPointer'):
-    _es1emu.glVertexPointer.restype = c_void
-    _es1emu.glVertexPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
+if function_exists(_glview,'glVertexPointer'):
+    _glview.glVertexPointer.restype = c_void
+    _glview.glVertexPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
     def glVertexPointer(size,gtype,stride,pointer):
         '''
         void glVertexPointer (GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
@@ -143,11 +143,11 @@ if function_exists(_es1emu,'glVertexPointer'):
             else:
                 # 不明なtypeの場合、GL_FLOATとする
                 pointer = pointer.ctypes.data_as(POINTER(c_float))
-        _es1emu.glVertexPointer(size,gtype,stride,pointer)
+        _glview.glVertexPointer(size,gtype,stride,pointer)
 
-if function_exists(_es1emu,'glColorPointer'):
-    _es1emu.glColorPointer.restype = c_void
-    _es1emu.glColorPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
+if function_exists(_glview,'glColorPointer'):
+    _glview.glColorPointer.restype = c_void
+    _glview.glColorPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
     def glColorPointer(size,gtype,stride,pointer):
         '''
         void glColorPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
@@ -173,11 +173,11 @@ if function_exists(_es1emu,'glColorPointer'):
             else:
                 # 不明なtypeの場合、GL_FLOATとする
                 pointer = pointer.ctypes.data_as(POINTER(c_float))
-        _es1emu.glColorPointer(size,gtype,stride,pointer)
+        _glview.glColorPointer(size,gtype,stride,pointer)
 
-if function_exists(_es1emu,'glTexCoordPointer'):
-    _es1emu.glTexCoordPointer.restype = c_void
-    _es1emu.glTexCoordPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
+if function_exists(_glview,'glTexCoordPointer'):
+    _glview.glTexCoordPointer.restype = c_void
+    _glview.glTexCoordPointer.argtypes = [c_GLint,c_GLenum,c_GLsizei,c_GLvoid_p]
     def glTexCoordPointer(size,gtype,stride,pointer):
         '''
         void glTexCoordPointer (GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
@@ -195,4 +195,4 @@ if function_exists(_es1emu,'glTexCoordPointer'):
             else:
                 # 不明なtypeの場合、GL_FLOATとする
                 pointer = pointer.ctypes.data_as(POINTER(c_float))
-        _es1emu.glTexCoordPointer(size,gtype,stride,pointer)
+        _glview.glTexCoordPointer(size,gtype,stride,pointer)

@@ -46,8 +46,14 @@ class   app_window(glv_class_window):
             v_color = color;
             }"""
 
-        self.frag_shader_text = """precision mediump float;
+        if glv_isOpenGL_ES():
+            self.frag_shader_text = """precision mediump float;
             varying vec4 v_color;
+            void main() {
+            gl_FragColor = v_color;
+            }"""
+        else:
+            self.frag_shader_text = """varying vec4 v_color;
             void main() {
             gl_FragColor = v_color;
             }"""

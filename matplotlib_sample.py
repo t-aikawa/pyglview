@@ -256,6 +256,7 @@ class   app_window(glv_class_window):
         self.drawing = 0
         if self.req_draw != 0:
             self.req_draw = 0
+            #print("on_endDraw onReShape")
             self.onReShape(0,0,self.window_width,self.window_height)
         return(GLV_OK)
 

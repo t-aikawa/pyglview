@@ -45,41 +45,41 @@ if function_exists(_glview,'glvFont_GetPosition'):
         _glview.glvFont_GetPosition(x_ofs,y_ofs)
         return[x_ofs.value,y_ofs.value]
 
-#void glvFont_setColorRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+#void glvFont_setColor4i(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+if function_exists(_glview,'glvFont_setColor4i'):
+    _glview.glvFont_setColor4i.restype = c_void
+    _glview.glvFont_setColor4i.argtypes = [c_uint8,c_uint8,c_uint8,c_uint8]
+    def glvFont_setColor4i(r,g,b,a):
+        '''
+        '''
+        _glview.glvFont_setColor4i(r,g,b,a)
+
+#void glvFont_SetBkgdColor4i(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+if function_exists(_glview,'glvFont_SetBkgdColor4i'):
+    _glview.glvFont_SetBkgdColor4i.restype = c_void
+    _glview.glvFont_SetBkgdColor4i.argtypes = [c_uint8,c_uint8,c_uint8,c_uint8]
+    def glvFont_SetBkgdColor4i(r,g,b,a):
+        '''
+        '''
+        _glview.glvFont_SetBkgdColor4i(r,g,b,a)
+
+#void glvFont_setColorRGBA(unsigned int color);
 if function_exists(_glview,'glvFont_setColorRGBA'):
     _glview.glvFont_setColorRGBA.restype = c_void
-    _glview.glvFont_setColorRGBA.argtypes = [c_uint8,c_uint8,c_uint8,c_uint8]
-    def glvFont_setColorRGBA(r,g,b,a):
+    _glview.glvFont_setColorRGBA.argtypes = [c_uint32]
+    def glvFont_setColorRGBA(color):
         '''
         '''
-        _glview.glvFont_setColorRGBA(r,g,b,a)
+        _glview.glvFont_setColorRGBA(color)
 
-#void glvFont_SetBkgdColorRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-if function_exists(_glview,'glvFont_SetBkgdColorRGBA'):
-    _glview.glvFont_SetBkgdColorRGBA.restype = c_void
-    _glview.glvFont_SetBkgdColorRGBA.argtypes = [c_uint8,c_uint8,c_uint8,c_uint8]
-    def glvFont_SetBkgdColorRGBA(r,g,b,a):
+#void glvFont_setBkgdColorRGBA(unsigned int color);
+if function_exists(_glview,'glvFont_setBkgdColorRGBA'):
+    _glview.glvFont_setBkgdColorRGBA.restype = c_void
+    _glview.glvFont_setBkgdColorRGBA.argtypes = [c_uint32]
+    def glvFont_setBkgdColorRGBA(color):
         '''
         '''
-        _glview.glvFont_SetBkgdColorRGBA(r,g,b,a)
-
-#void glvFont_setColor(unsigned int color);
-if function_exists(_glview,'glvFont_setColor'):
-    _glview.glvFont_setColor.restype = c_void
-    _glview.glvFont_setColor.argtypes = [c_uint32]
-    def glvFont_setColor(color):
-        '''
-        '''
-        _glview.glvFont_setColor(color)
-
-#void glvFont_setBkgdColor(unsigned int color);
-if function_exists(_glview,'glvFont_setBkgdColor'):
-    _glview.glvFont_setBkgdColor.restype = c_void
-    _glview.glvFont_setBkgdColor.argtypes = [c_uint32]
-    def glvFont_setBkgdColor(color):
-        '''
-        '''
-        _glview.glvFont_setBkgdColor(color)
+        _glview.glvFont_setBkgdColorRGBA(color)
 
 #void glvFont_setFontPixelSize(int size);
 if function_exists(_glview,'glvFont_setFontPixelSize'):

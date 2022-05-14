@@ -17,7 +17,13 @@ from .library import (
 )
 
 # ------------------------------------------------------------------------------
-# /usr/include/GLES2/gl2.h
+if function_exists(_glview,'glv_isOpenGL_ES'):
+    _glview.glv_isOpenGL_ES.restype = c_int
+    _glview.glv_isOpenGL_ES.argtypes = c_void
+    def glv_isOpenGL_ES():
+        return _glview.glv_isOpenGL_ES()
+# ------------------------------------------------------------------------------
+# GLES2/gl2.h
 GL_DEPTH_BUFFER_BIT = glv_linking_value('GL_DEPTH_BUFFER_BIT')
 GL_STENCIL_BUFFER_BIT = glv_linking_value('GL_STENCIL_BUFFER_BIT')
 GL_COLOR_BUFFER_BIT = glv_linking_value('GL_COLOR_BUFFER_BIT')
@@ -313,13 +319,18 @@ GL_NONE = glv_linking_value('GL_NONE')
 GL_FRAMEBUFFER_COMPLETE = glv_linking_value('GL_FRAMEBUFFER_COMPLETE')
 GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT = glv_linking_value('GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT')
 GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = glv_linking_value('GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT')
-GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS = glv_linking_value('GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS')
+if glv_isOpenGL_ES():
+    GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS = glv_linking_value('GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS')
 GL_FRAMEBUFFER_UNSUPPORTED = glv_linking_value('GL_FRAMEBUFFER_UNSUPPORTED')
 GL_FRAMEBUFFER_BINDING = glv_linking_value('GL_FRAMEBUFFER_BINDING')
 GL_RENDERBUFFER_BINDING = glv_linking_value('GL_RENDERBUFFER_BINDING')
 GL_MAX_RENDERBUFFER_SIZE = glv_linking_value('GL_MAX_RENDERBUFFER_SIZE')
 GL_INVALID_FRAMEBUFFER_OPERATION = glv_linking_value('GL_INVALID_FRAMEBUFFER_OPERATION')
-
+# ------------------------------------------------------------------------------
+# GLES2/gl2.h
+EGL_OPENGL_ES_API = glv_linking_value('EGL_OPENGL_ES_API')
+EGL_OPENGL_API = glv_linking_value('EGL_OPENGL_API')
+# ------------------------------------------------------------------------------
 # typedef khronos_int8_t GLbyte;
 # typedef khronos_float_t GLclampf;
 # typedef khronos_int32_t GLfixed;

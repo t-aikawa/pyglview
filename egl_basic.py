@@ -37,8 +37,14 @@ vert_shader_text = """uniform mat4 rotation;
       v_color = color;
     }"""
 
-frag_shader_text = """precision mediump float;
+if glv_isOpenGL_ES():
+    frag_shader_text = """precision mediump float;
     varying vec4 v_color;
+    void main() {
+      gl_FragColor = v_color;
+    }"""
+else:
+    frag_shader_text = """varying vec4 v_color;
     void main() {
       gl_FragColor = v_color;
     }"""

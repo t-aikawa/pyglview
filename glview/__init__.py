@@ -7,7 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 __copyright__    = 'Copyright (c) 2022 t-aikawa'
-__version__      = '0.0.2'
+__version__      = '0.0.3'
 __license__      = 'MIT'
 __author__       = 'Tetsumori Aikawa'
 __author_email__ = 'aikawat@jcom.home.ne.jp'
@@ -15,7 +15,7 @@ __url__          = 'https://github.com/t-aikawa/pyglview'
 
 GLV_VERSION_MAJOR = 0
 GLV_VERSION_MINOR = 1
-GLV_VERSION_PATCH = 16
+GLV_VERSION_PATCH = 18
 
 from .std_type_h import *
 from .opengles2 import *

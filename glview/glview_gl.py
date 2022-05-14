@@ -609,15 +609,4 @@ if function_exists(_glview,'glvGl_Orthof'):
         '''
         _glview.glvGl_Orthof(left, right, bottom, top, zNear, zFar)
 
-#void glColor4f_RGBA(GLV_RGBACOLOR rgba);
-if function_exists(_glview,'glColor4f_RGBA'):
-    _glview.glColor4f_RGBA.restype = c_void
-    _glview.glColor4f_RGBA.argtypes = [GLV_RGBACOLOR]
-    def glColor4f_RGBA(rgba):
-        '''
-        * @brief		色設定
-        * @param[in]	rgba rgba
-        '''
-        _glview.glColor4f_RGBA(rgba)
-
 # ------------------------------------------------------------------------------
